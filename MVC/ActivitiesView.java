@@ -69,7 +69,7 @@ public class ActivitiesView implements ActionListener{
 		addB.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
+				model.addActivity((String)activityCB.getSelectedItem(), Double.parseDouble(valueTF.getText()), Integer.parseInt(dateTF.getText()));
 				
 			}			
 		});
@@ -79,7 +79,8 @@ public class ActivitiesView implements ActionListener{
 		removeB.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
+				String[] temp = logTA.getSelectedText().split(" ");
+				model.removeActivity(Integer.parseInt(temp[0]));
 				
 			}			
 		});

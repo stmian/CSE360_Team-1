@@ -9,6 +9,7 @@
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import java.sql.*;
 
 /**
  *
@@ -19,8 +20,33 @@ public class BeHealthy {
 	/**
 	 * @param args the command line arguments
 	 */
+    static Connection conn = null;
+	static String user = "cse360";
+    static String pass = "behealthy";
+    static String dbClass = "com.mysql.jdbc.Driver";
+    static String dbDriver = "jdbc:mysql://mysql.builtbybrenden.com";
+    
 	public static void main(String[] args) {
 		// TODO code application logic here
+        
+        
+        try {
+            Class.forName(dbClass).newInstance();
+            System.out.println("driver loaded");
+        } catch (Exception ex) {
+            System.err.println(ex);
+        }
+        
+        try {
+            conn = DriverManager.getConnection(dbDriver, user, pass);
+            
+            System.out.println("connected");
+            
+        } catch (SQLException ex) {
+            System.out.println("SQLException: " + ex.getMessage());
+        }
+        
+        
 		JFrame mainFrame = new JFrame();
 
 		UserModel userModel = new UserModel("", 0, "", false);
