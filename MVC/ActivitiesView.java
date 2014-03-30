@@ -14,6 +14,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JFileChooser;
+import java.io.File;
 
 public class ActivitiesView implements ActionListener{
 
@@ -89,7 +91,17 @@ public class ActivitiesView implements ActionListener{
 		importB.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
+				File file = null;
+				JFileChooser fc = new JFileChooser();
+				int returnVal = fc.showOpenDialog(null);
+				
+				if(returnVal == JFileChooser.APPROVE_OPTION) {
+					file = fc.getSelectedFile();
+					model.importActivity(file);
+				}
+				else {
+					return;
+				}
 				
 			}			
 		});

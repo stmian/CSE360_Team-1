@@ -1,5 +1,7 @@
 import java.util.*;
 import java.sql.*;
+import java.io.File;
+import java.io.FileNotFoundException;
 
 
 public class ActivitiesModel{
@@ -99,6 +101,28 @@ public class ActivitiesModel{
 		else
             return false;
 		
+	}
+	
+	public boolean importActivity(File file){
+		try {
+			Scanner scanner = new Scanner(file);
+			ArrayList<String> time = new ArrayList<String>();
+			ArrayList<String> active = new ArrayList<String>();
+			
+			while(scanner.hasNextLine()){
+				String line = scanner.nextLine();
+				line = line.trim();
+				String[] lineParts = line.split(",");
+				time.add(lineParts[0]);
+				active.add(lineParts[1]);				
+				//TODO use strings to add activity to database
+			}
+			return true;
+		} 
+		catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+			return false;
+		}
 	}
 	
 }
