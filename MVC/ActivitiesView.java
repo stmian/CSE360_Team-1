@@ -94,7 +94,6 @@ public class ActivitiesView implements ActionListener{
 				File file = null;
 				JFileChooser fc = new JFileChooser();
 				int returnVal = fc.showOpenDialog(null);
-				
 				if(returnVal == JFileChooser.APPROVE_OPTION) {
 					file = fc.getSelectedFile();
 					model.importActivity(file);

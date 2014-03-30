@@ -57,7 +57,7 @@ public class BeHealthy {
         mPane.addTab("Profile", userPanel);
 
         mainFrame = new JFrame();
-        mainFrame.setSize(500, 500);
+        mainFrame.setSize(750, 750);
         mainFrame.setTitle("BeHealthy");
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setResizable(false);
