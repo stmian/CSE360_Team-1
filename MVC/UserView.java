@@ -24,7 +24,7 @@ public class UserView implements ActionListener {
     JTextField nameTF, birthdateTF, heightTF;
     JTextArea messageTA;
     JComboBox averagesCB;
-    JButton resetB, resetActB, importB;
+    JButton resetB, resetActB, saveB;
     JPanel userPanel;
 
     UserModel model;
@@ -83,8 +83,8 @@ public class UserView implements ActionListener {
             } //actionPerformed
         });
         
-        importB = new JButton("Import");
-        importB.addActionListener(new ActionListener() {
+        saveB = new JButton("Save");
+        saveB.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
                 // TODO: Add action code
             } //actionPerformed
@@ -112,7 +112,7 @@ public class UserView implements ActionListener {
         addItem(userPanel, averagesCB, 0, 6, 1, 1, inset, GridBagConstraints.CENTER);
         addItem(userPanel, resetB, 1, 6, 1, 1, inset, GridBagConstraints.CENTER);
         addItem(userPanel, resetActB, 3, 6, 1, 1, inset, GridBagConstraints.CENTER);
-        addItem(userPanel, importB, 0, 7, 4, 1, inset2, GridBagConstraints.SOUTH);
+        addItem(userPanel, saveB, 0, 7, 4, 1, inset2, GridBagConstraints.SOUTH);
     } //createView
     
     
