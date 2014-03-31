@@ -7,8 +7,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import ActivitiesModel.Activity;
-
 public class HealthModel {
 
     //=================== Private properties/methods ===================//
@@ -39,11 +37,13 @@ public class HealthModel {
         Statement st;
 			try {
 				st = (BeHealthy.conn).createStatement();
-				ResultSet res = st.executeQuery("SELECT * FROM  activities");
+				ResultSet res = st.executeQuery("SELECT hm.*, hmt.id, hmt.name AS type_id FROM health_metrics hm, health_metric_types hmt WHERE hm.typeId = hmt.id");
 				temp = res.toString().split(" ");
 	            while (res.next()) {
 	                // TODO: Change this to add Activities to the collection without the add method. This is only used to add new records.
-	                addHealthMetric(Integer.parseInt(temp[0]), Double.parseDouble(temp[1]), dateFormatter.parse(temp[2]));
+                    healthMetrics.add(new HealthMetric(1, 1, "", 1, new Date()));
+
+	                //addHealthMetric(Integer.parseInt(temp[0]), Double.parseDouble(temp[1]), dateFormatter.parse(temp[2]));
 	            	}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -98,6 +98,7 @@ public class HealthModel {
 
     public boolean updateHealthMetric(int id, int typeId, double metric, Date date) {
         // TODO: add database call
+        return false;
     } //updateHealthMetric
 
     public boolean removeHealthMetric(int id) {
