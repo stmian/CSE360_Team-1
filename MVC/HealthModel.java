@@ -10,14 +10,14 @@ public class HealthModel {
         int id;
         int typeId;
         String typeName;
-        double duration;
+        double metric;
         Date date;
 
-        public HealthMetric(int id, int typeId, String typeName, double duration, Date date) {
+        public HealthMetric(int id, int typeId, String typeName, double metric, Date date) {
             this.id = id;
             this.typeId = typeId;
             this.typeName = typeName;
-            this.duration = duration;
+            this.metric = metric;
             this.date = date;
         } //__constructor
     } //HealthMetric
@@ -29,11 +29,11 @@ public class HealthModel {
         // TODO: add database call to read all health metric records
     } //__constructor
 
-    public void addHealthMetric(int typeId, double duration, Date date) {
+    public void addHealthMetric(int typeId, double metric, Date date) {
         // TODO: add database call
     } //addHealthMetric
 
-    public void updateHealthMetric(int id, int typeId, double duration, Date date) {
+    public void updateHealthMetric(int id, int typeId, double metric, Date date) {
         // TODO: add database call
     } //updateHealthMetric
 
