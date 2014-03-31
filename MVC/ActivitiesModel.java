@@ -163,7 +163,7 @@ public class ActivitiesModel {
         }
     }
 
-    public void updateActivity(int id) {
+    public void updateActivity(int id, int typeId, double duration, Date date) {
         // TODO: Add database call
     } //updateActivity
 
