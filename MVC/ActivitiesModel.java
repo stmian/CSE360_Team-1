@@ -110,11 +110,24 @@ public class ActivitiesModel {
             ArrayList<String> time = new ArrayList<String>();
             ArrayList<String> active = new ArrayList<String>();
             int count = 0;
+            int falseCount = 0;
 
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
                 line = line.trim();
                 String[] lineParts = line.split(",");
+                if(lineParts[1].equals("-1")){
+                	falseCount += 1;
+                }
+                else {
+                	falseCount = 0;
+                }
+                if(falseCount > 1){
+                	time.remove(time.size() - 1);
+                	active.remove(active.size() - 1);
+                	System.out.println("Inactive");
+                	break;
+                }
                 time.add(lineParts[0]);
                 active.add(lineParts[1]);
                 System.out.println("Time: " + time.get(count) + " Active: " + active.get(count));
@@ -122,6 +135,11 @@ public class ActivitiesModel {
 
                 //TODO use strings to add activity to database
             }
+            
+            if(time.size() == 0){
+            	return false;
+            }
+            
             String startTimeString = time.get(0);
             SimpleDateFormat sdf = new SimpleDateFormat("hh:mm");
             Date startDate = null;
@@ -154,7 +172,7 @@ public class ActivitiesModel {
 
             Calendar c = Calendar.getInstance();
             Date current = c.getTime();
-            System.out.println(current);
+            System.out.println(differenceHours);
             //addActivity("Sleep", differenceHours, current);		//TODO Uncomment once addActivity functionality is complete
             return true;
         } catch (FileNotFoundException e1) {
