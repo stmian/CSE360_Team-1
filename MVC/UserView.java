@@ -1,10 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-//package behealthy;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -29,14 +22,12 @@ public class UserView implements ActionListener {
 
     UserModel model;
     UserController controller;
-    
-    
+
     public UserView(UserController controller, UserModel model) {
         this.controller = controller;
         this.model = model;
     } //__constructor
-    
-    
+
     public void createView() {
         userPanel = new JPanel();
         userPanel.setLayout(new GridBagLayout());
@@ -52,21 +43,21 @@ public class UserView implements ActionListener {
         nameL = new JLabel("Name:");
         nameTF = new JTextField(controller.getName());
         nameTF.setPreferredSize(new Dimension(90, 25));
-        
+
         birthdateL = new JLabel("Birthdate:");
         birthdateTF = new JTextField(controller.getBirthdate());
         birthdateTF.setPreferredSize(new Dimension(90, 25));
-        
+
         heightL = new JLabel("Height:");
         heightTF = new JFormattedTextField(controller.getHeight());
         heightTF.setPreferredSize(new Dimension(90, 25));
-        
+
         messageTA = new JTextArea("                 Start by entering a little bit of information about yourself."
                 + "\n    Track your daily activities in the Activities tab. Track you health day "
                 + "\nto day in the �Health� tab.  View and print a summary in the Home tab.");
         messageTA.setBackground(null);
         messageTA.setEditable(false);
-        
+
         resetL = new JLabel("Reset Averages");
         averagesCB = new JComboBox(averages);
         resetB = new JButton("Reset Avg");
@@ -75,14 +66,14 @@ public class UserView implements ActionListener {
                 // TODO: Add action code
             } //actionPerformed
         });
-        
+
         resetActB = new JButton("Reset Account");
         resetActB.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
                 // TODO: Add action code
             } //actionPerformed
         });
-        
+
         saveB = new JButton("Save");
         saveB.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
@@ -93,7 +84,7 @@ public class UserView implements ActionListener {
         //Used for padding around components
         int[] inset = {5, 5, 5, 5};
         int[] inset2 = {30, 5, 5, 5}; //Import button
-        int[] inset3 = {0, 5, 20, 40}; //icon 
+        int[] inset3 = {0, 5, 20, 40}; //icon
         int[] inset4 = {5, 5, 30, 5}; //Height
         int[] inset5 = {5, 5, 20, 5}; //message TA
         int[] inset6 = {0, 0, 20, 100}; //Title
@@ -114,13 +105,11 @@ public class UserView implements ActionListener {
         addItem(userPanel, resetActB, 3, 6, 1, 1, inset, GridBagConstraints.CENTER);
         addItem(userPanel, saveB, 0, 7, 4, 1, inset2, GridBagConstraints.SOUTH);
     } //createView
-    
-    
+
     public JPanel getPanel() {
         return this.userPanel;
     } //getPanel
 
-    
     public void addItem(JPanel p, JComponent c, int x, int y, int width, int height, int[] inset, int align) {
         GridBagConstraints gc = new GridBagConstraints();
         gc.gridx = x;
