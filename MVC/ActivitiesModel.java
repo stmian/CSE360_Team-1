@@ -12,12 +12,16 @@ public class ActivitiesModel {
     //=================== Private properties/methods ===================//
     private class Activity {
 
-        String name;
+        int id;
+        int typeId;
+        String typeName;
         double duration;
-        int date;
+        Date date;
 
-        public Activity(String name, double duration, int date) {
-            this.name = name;
+        public Activity(int id, int typeId, String typeName, double duration, Date date) {
+            this.id = id;
+            this.typeId = typeId;
+            this.typeName = typeName;
             this.duration = duration;
             this.date = date;
         }
@@ -28,24 +32,25 @@ public class ActivitiesModel {
     //=================== Public properties/methods ====================//
     public ActivitiesModel() {
         activities = new ArrayList();
-
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
         String[] temp;
+
         try {
             Statement st = (BeHealthy.conn).createStatement();
 
             ResultSet res = st.executeQuery("SELECT * FROM  activities");
             temp = res.toString().split(" ");
             while (res.next()) {
-                addActivity(temp[0], Double.parseDouble(temp[1]), Integer.parseInt(temp[2]));
-
-            }
+                // TODO: Change this to add Activities to the collection without the add method. This is only used to add new records.
+                addActivity(temp[0], Double.parseDouble(temp[1]), dateFormatter.parse(temp[2]));
+            } //while
 
         } catch (SQLException e) {
-
             e.printStackTrace();
-        }
-
-    }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } //try-catch
+    } //__constructor
 
     /*TODO: Enter public getters/setters here e.g.:
 
@@ -53,8 +58,9 @@ public class ActivitiesModel {
      return name;
      }
      */
-    public boolean addActivity(String name, double duration, int date) {
-        Activity d = new Activity(name, duration, date);
+    public boolean addActivity(String typeName, double duration, Date date) {
+        // TODO: Fix this to use the id/typeId from SQL query
+        Activity d = new Activity(1, 1, typeName, duration, date);
         int i = -1;
 
         try {
@@ -156,5 +162,9 @@ public class ActivitiesModel {
             return false;
         }
     }
+
+    public void updateActivity(int id) {
+        // TODO: Add database call
+    } //updateActivity
 
 }

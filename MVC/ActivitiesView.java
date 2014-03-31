@@ -17,6 +17,10 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JFileChooser;
 import java.io.File;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ActivitiesView implements ActionListener {
 
@@ -35,6 +39,7 @@ public class ActivitiesView implements ActionListener {
 
     ActivitiesModel model;
     ActivitiesController controller;
+    SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
 
     public ActivitiesView(ActivitiesController controller, ActivitiesModel model) {
         this.controller = controller;
@@ -72,9 +77,12 @@ public class ActivitiesView implements ActionListener {
         addB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                model.addActivity((String) activityCB.getSelectedItem(), Double.parseDouble(valueTF.getText()), Integer.parseInt(dateTF.getText()));
-
-            }
+                try {
+                    model.addActivity((String) activityCB.getSelectedItem(), Double.parseDouble(valueTF.getText()), dateFormatter.parse(dateTF.getText()));
+                } catch (ParseException ex) {
+                    ex.printStackTrace();
+                } //try-catch
+            } //actionPerformed
         });
 
         removeB = new JButton("Remove");
