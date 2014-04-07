@@ -1,5 +1,6 @@
 
 import javax.swing.JPanel;
+import java.util.Date;
 
 /**
  * @author Brenden
@@ -17,6 +18,10 @@ public class UserController {
         this.view.createView();
     } //__constructor
 
+    public int getId() {
+        return model.getId();
+    } //getId
+
     public String getName() {
         return model.getName();
     } //getName
@@ -25,29 +30,21 @@ public class UserController {
         model.setName(name);
     } //setName
 
-    public float getHeight() {
+    public double getHeight() {
         return model.getHeight();
     } //getHeight_metric
 
-    public void setHeight_metric(float height_metric) {
-        model.setHeight_metric(height_metric);
+    public void setHeight(double height) {
+        model.setHeight(height);
     } //setHeight_metric
 
-    public String getBirthdate() {
+    public Date getBirthdate() {
         return model.getBirthdate();
     } //getBirthdate
 
-    public void setBirthdate(String birthdate) {
+    public void setBirthdate(Date birthdate) {
         model.setBirthdate(birthdate);
     } //setBirthdate
-
-    public boolean getUseMetric() {
-        return model.getUseMetric();
-    } //getUseMetric
-
-    public void setUseMetric(boolean useMetric) {
-        model.setUseMetric(useMetric);
-    } //setUseMetric
 
     public JPanel getPanel() {
         return view.getPanel();

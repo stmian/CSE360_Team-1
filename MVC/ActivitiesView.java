@@ -39,7 +39,6 @@ public class ActivitiesView implements ActionListener {
 
     ActivitiesModel model;
     ActivitiesController controller;
-    SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
 
     public ActivitiesView(ActivitiesController controller, ActivitiesModel model) {
         this.controller = controller;
@@ -66,6 +65,8 @@ public class ActivitiesView implements ActionListener {
         valueTF.setPreferredSize(new Dimension(90, 25));
         dateTF = new JTextField("2/8/14");
         dateTF.setPreferredSize(new Dimension(80, 25));
+
+        // TODO: Change this to a table and populate with ArrayList from controller.getActivities
         logTA = new JTextArea();
         scroll = new JScrollPane(logTA);
         scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -78,13 +79,20 @@ public class ActivitiesView implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    model.addActivity((String) activityCB.getSelectedItem(), Double.parseDouble(valueTF.getText()), dateFormatter.parse(dateTF.getText()));
+                    // TODO: view should pull activity types and include type ID as the key
+                    controller.addActivity(
+                            1,
+                            activityCB.getSelectedItem().toString(),
+                            new java.sql.Date(BeHealthy.dateParser.parse(dateTF.getText()).getTime()),
+                            Double.parseDouble(valueTF.getText())
+                    ); //addActivity
                 } catch (ParseException ex) {
                     ex.printStackTrace();
                 } //try-catch
             } //actionPerformed
         });
 
+        // TODO: Change method calls to point to controller instead of model
         removeB = new JButton("Remove");
         removeB.setPreferredSize(new Dimension(80, 25));
         removeB.addActionListener(new ActionListener() {
@@ -92,7 +100,6 @@ public class ActivitiesView implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 String[] temp = logTA.getSelectedText().split(" ");
                 model.removeActivity(Integer.parseInt(temp[0]));
-
             }
         });
 

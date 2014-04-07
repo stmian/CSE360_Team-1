@@ -7,101 +7,90 @@ import java.sql.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 
+/**
+ * @author Brenden
+ */
 public class ActivitiesModel {
-
     //=================== Private properties/methods ===================//
-    private class Activity {
-
-        int id;
-        int typeId;
-        String typeName;
-        double duration;
-        Date date;
-
-        public Activity(int id, int typeId, String typeName, double duration, Date date) {
-            this.id = id;
-            this.typeId = typeId;
-            this.typeName = typeName;
-            this.duration = duration;
-            this.date = date;
-        }
-    }
-
-    ArrayList<Activity> activities;
+    private ArrayList<Activity> activities;
 
     //=================== Public properties/methods ====================//
     public ActivitiesModel() {
-        activities = new ArrayList();
-        SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
-        String[] temp;
+        Statement query = null;
+        ResultSet resultSet = null;
+        activities = new ArrayList<Activity>();
 
         try {
-            Statement st = (BeHealthy.conn).createStatement();
+            query = BeHealthy.conn.createStatement();
+            resultSet = query.executeQuery("SELECT a.*, at.name AS typeName FROM activities a, activity_types at WHERE a.typeId = at.id");
 
-            ResultSet res = st.executeQuery("SELECT * FROM  activities");
-            temp = res.toString().split(" ");
-            while (res.next()) {
-                // TODO: Change this to add Activities to the collection without the add method. This is only used to add new records.
-                addActivity(temp[0], Double.parseDouble(temp[1]), dateFormatter.parse(temp[2]));
+            while (resultSet.next()) {
+                activities.add(new Activity(
+                        resultSet.getInt("id"),
+                        resultSet.getInt("typeId"),
+                        resultSet.getString("typeName"),
+                        resultSet.getDate("date"),
+                        resultSet.getDouble("value")
+                )); //activities
             } //while
-
         } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
             e.printStackTrace();
         } //try-catch
     } //__constructor
 
-    /*TODO: Enter public getters/setters here e.g.:
+    public ArrayList<Activity> getActivities() {
+        return activities;
+    } //getActivities
 
-     public String getName() {
-     return name;
-     }
-     */
-    public boolean addActivity(String typeName, double duration, Date date) {
-        // TODO: Fix this to use the id/typeId from SQL query
-        Activity d = new Activity(1, 1, typeName, duration, date);
-        int i = -1;
+    public boolean addActivity(int typeId, String typeName, Date date, double duration) {
+        PreparedStatement query = null;
+        ResultSet resultSet = null;
+        java.sql.Date date_sql = new java.sql.Date(date.getTime());
 
         try {
-            Statement st = (BeHealthy.conn).createStatement();
+            query = BeHealthy.conn.prepareStatement("INSERT INTO activities (userId, typeId, date, value) VALUES (?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+            query.setInt(1, BeHealthy.getCurrentUserId());
+            query.setInt(2, typeId);
+            query.setDate(3, date_sql);
+            query.setDouble(4, duration);
 
-            i = st.executeUpdate("");//TODO ADD APPROPRIATE SQL QUERY TO ADD ACTIVITY
+            // Insert into table and returns new ID
+            query.executeUpdate();
+            resultSet = query.getGeneratedKeys();
+            resultSet.next();
+            int newId = resultSet.getInt(1);
 
-        } catch (SQLException e) {
+            activities.add(new Activity(
+                    newId,
+                    typeId,
+                    typeName,
+                    date,
+                    duration
+            )); //activities
 
-            e.printStackTrace();
-        }
-
-        if (i == 1) {
-            activities.add(d);
             return true;
-        } else {
+        } catch (SQLException e) {
+            e.printStackTrace();
             return false;
-        }
+        } //try-catch
+    } //addActivity
 
-    }
-
-    public boolean removeActivity(int act) {
-
-        int i = -1;
+    public boolean removeActivity(int id) {
+        PreparedStatement query = null;
+        ResultSet resultSet = null;
 
         try {
-            Statement st = (BeHealthy.conn).createStatement();
+            query = BeHealthy.conn.prepareStatement("DELETE FROM activities WHERE id = ?)");
+            query.setInt(1, id);
+            query.executeUpdate();
 
-            i = st.executeUpdate("");//ADD APPROPRIATE SQL QUERY TO REMOVE ACTIVITY
-        } catch (SQLException e) {
+            // TODO: Remove activity from array list
 
-            e.printStackTrace();
-        }
-
-        if (i == 1) {
-            activities.remove(act);
             return true;
-        } else {
+        } catch (SQLException e) {
+            e.printStackTrace();
             return false;
-        }
-
+        } //try-catch
     }
 
     public boolean importActivity(File file) {

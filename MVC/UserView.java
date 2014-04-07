@@ -1,6 +1,8 @@
 
 import java.awt.*;
 import java.awt.event.*;
+import java.text.ParseException;
+import java.util.Date;
 import javax.swing.*;
 
 /**
@@ -9,7 +11,7 @@ import javax.swing.*;
  */
 public class UserView implements ActionListener {
 
-    //Averages
+    //=================== Private properties/methods ===================//
     String[] averages = {"Blood Pressure", "Heart Rate", "Blood Sugar", "Sleep", "Workout", "Work", "Calories"};
 
     //Components
@@ -23,6 +25,21 @@ public class UserView implements ActionListener {
     UserModel model;
     UserController controller;
 
+    /**
+     * Transforms centimeters to English standard format
+     *
+     * @return String formatted with feet"inches'
+     */
+    private String displayHeight() {
+        double height_cm = controller.getHeight();
+        int feet = (int) (height_cm * 0.0328084f);
+        int inches = (int) (height_cm * 0.393701f - (feet * 12));
+
+        return String.format("%d\"%d\'", feet, inches);
+    } //displayHeight
+
+
+    //=================== Public properties/methods ====================//
     public UserView(UserController controller, UserModel model) {
         this.controller = controller;
         this.model = model;
@@ -45,11 +62,11 @@ public class UserView implements ActionListener {
         nameTF.setPreferredSize(new Dimension(90, 25));
 
         birthdateL = new JLabel("Birthdate:");
-        birthdateTF = new JTextField(controller.getBirthdate());
+        birthdateTF = new JTextField(BeHealthy.dateFormatter.format(controller.getBirthdate()));
         birthdateTF.setPreferredSize(new Dimension(90, 25));
 
         heightL = new JLabel("Height:");
-        heightTF = new JFormattedTextField(controller.getHeight());
+        heightTF = new JFormattedTextField(displayHeight());
         heightTF.setPreferredSize(new Dimension(90, 25));
 
         messageTA = new JTextArea("                 Start by entering a little bit of information about yourself."

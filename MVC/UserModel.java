@@ -1,22 +1,45 @@
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Date;
 
 /**
  * @author Brenden
  */
 public class UserModel {
-
     //=================== Private properties/methods ===================//
+    private int id;
     private String name;
-    private float height_metric;
-    private String birthdate;
-    private boolean useMetric;
+    private double height;
+    private Date birthdate;
 
     //=================== Public properties/methods ====================//
-    public UserModel(String name, float height_metric, String birthdate, boolean useMetric) {
-        this.setName(name);
-        this.setHeight_metric(height_metric);
-        this.setBirthdate(birthdate);
-        this.setUseMetric(useMetric);
+    public UserModel() {
+        Statement query = null;
+        ResultSet resultSet = null;
+
+        try {
+            query = BeHealthy.conn.createStatement();
+            resultSet = query.executeQuery("SELECT * FROM users");
+
+            while (resultSet.next()) {
+                this.id = resultSet.getInt("id");
+                this.name = resultSet.getString("firstName") + " " + resultSet.getString("lastName");
+                this.height = resultSet.getDouble("height");
+                this.birthdate = resultSet.getDate("birthdate");
+            } //while
+        } catch (SQLException ex) {
+            // TODO: Handle exceptions
+        } //try-catch
     } //__constructor
+
+    public int getId() {
+        return id;
+    } //getId
+
+    public void setId(int id) {
+        this.id = id;
+    } //setId
 
     public String getName() {
         return name;
@@ -26,34 +49,19 @@ public class UserModel {
         this.name = name;
     } //setName
 
-    public float getHeight() {
-        float tempHeight = this.height_metric;
+    public double getHeight() {
+        return height;
+    } //getHeight
 
-        // Change to inches
-        if (!(this.useMetric)) {
-            tempHeight = tempHeight * .3937f;
-        } //if
+    public void setHeight(double height) {
+        this.height = height;
+    } //setHeight
 
-        return tempHeight;
-    } //getHeight_metric
-
-    public void setHeight_metric(float height_metric) {
-        this.height_metric = height_metric;
-    } //setHeight_metric
-
-    public String getBirthdate() {
+    public Date getBirthdate() {
         return birthdate;
     } //getBirthdate
 
-    public void setBirthdate(String birthdate) {
+    public void setBirthdate(Date birthdate) {
         this.birthdate = birthdate;
     } //setBirthdate
-
-    public boolean getUseMetric() {
-        return useMetric;
-    } //getUseMetric
-
-    public void setUseMetric(boolean useMetric) {
-        this.useMetric = useMetric;
-    } //setUseMetric
 } //User
