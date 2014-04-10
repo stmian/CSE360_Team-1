@@ -6,6 +6,9 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
+import java.util.ArrayList;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -13,39 +16,40 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 public class HealthView implements ActionListener {
-
+    
     //Activities variables
     String[] activities = {"Weight", "Blood Pressure", "Blood Sugar", "Heart Rate"};
     String[] units = {"lbs", "", "mg/dL", "bpm"};
-
+    
     //Components
     JLabel titleL, iconL, enterL, logL, unitsL;
     JComboBox metricCB;
     JTextField valueTF, dateTF;
-    JTextArea logTA;
+    JTable logTA;
     JButton addB, removeB;
     JScrollPane scroll;
     JPanel healthPanel;
-
-    HealthModel model;
+    
+    
     HealthController controller;
-
-    public HealthView(HealthController controller, HealthModel model) {
+    
+    public HealthView(HealthController controller) {
         this.controller = controller;
-        this.model = model;
+        
     }
-
+    
     public void createView() {
         healthPanel = new JPanel();
         healthPanel.setLayout(new GridBagLayout());
-
+        
         //Initialize standard variables
         Font font_title = new Font("Calibri", Font.PLAIN, 30);
-
+        
         //Initialize components
         titleL = new JLabel("Keep track of your health     ");
         titleL.setFont(font_title);
@@ -59,36 +63,76 @@ public class HealthView implements ActionListener {
         valueTF.setPreferredSize(new Dimension(90, 25));
         dateTF = new JTextField("2/8/14");
         dateTF.setPreferredSize(new Dimension(80, 25));
-        logTA = new JTextArea();
+        
+        String[] columnNames = {"Type",
+            "Metric",
+            "Date"};
+        final ArrayList<HealthMetric> array=controller.gethealthMetrics();
+        final String[][] data= new String[50][3];
+        for(int i=0;i<array.size();i++)
+        {
+        	
+            data[i][0]=array.get(i).typeName;
+            data[i][1]=String.valueOf(array.get(i).metric);
+            data[i][2]=String.valueOf(array.get(i).date);
+            
+        }
+        logTA = new JTable(data,columnNames);
         scroll = new JScrollPane(logTA);
         scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scroll.setPreferredSize(new Dimension(300, 230));
-
+        
+        
         addB = new JButton("Add");
         addB.setPreferredSize(new Dimension(80, 25));
         addB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-
+            	try {
+                    // TODO: view should pull activity types and include type ID as the key
+                    if(controller.addHealthMetric(
+                                                  metricCB.getSelectedIndex()
+                                                  ,Double.parseDouble(valueTF.getText()),
+                                                  new java.sql.Date(BeHealthy.dateParser.parse(dateTF.getText()).getTime())
+                                                  )
+                       ); //addActivity
+                    {
+                        data[array.size()-1][0]=metricCB.getSelectedItem().toString();
+                        data[array.size()-1][1]=valueTF.getText();
+                        data[array.size()-1][2]=dateTF.getText();
+                        logTA.updateUI();
+                    }
+                    
+                } catch (ParseException ex) {
+                    ex.printStackTrace();
+                } //try-catch
+                
             }
         });
-
+        
         removeB = new JButton("Remove");
         removeB.setPreferredSize(new Dimension(80, 25));
         removeB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-
+            	
+            	controller.removeHealthMetric(array.get(logTA.getSelectedRow()).id);
+                for(int i=logTA.getSelectedRow();i<controller.gethealthMetrics().size();i++)
+                {
+                	data[i][0]=data[i+1][0];
+                    data[i][1]=data[i+1][1];
+                    data[i][2]=data[i+1][2];
+                }
+                logTA.updateUI();
+                
             }
         });
-
+        
         //Used for padding around components
         int[] inset = {5, 5, 5, 5};
         int[] inset3 = {0, 5, 28, 5}; //Title/icon
-
+        
         //Add components
         addItem(healthPanel, iconL, 0, 0, 1, 1, inset3, GridBagConstraints.WEST);
         addItem(healthPanel, titleL, 1, 0, 4, 1, inset3, GridBagConstraints.WEST);
@@ -102,11 +146,11 @@ public class HealthView implements ActionListener {
         addItem(healthPanel, scroll, 0, 4, 4, 1, inset, GridBagConstraints.WEST);
         addItem(healthPanel, removeB, 4, 4, 1, 1, inset, GridBagConstraints.CENTER);
     }
-
+    
     public JPanel getPanel() {
         return this.healthPanel;
     }
-
+    
     public void addItem(JPanel p, JComponent c, int x, int y, int width, int height, int[] inset, int align) {
         GridBagConstraints gc = new GridBagConstraints();
         gc.gridx = x;
@@ -120,7 +164,7 @@ public class HealthView implements ActionListener {
         gc.fill = GridBagConstraints.NONE;
         p.add(c, gc);
     }
-
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
