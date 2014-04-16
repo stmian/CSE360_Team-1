@@ -66,7 +66,7 @@ public class HomeView implements ActionListener {
         printB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                model.printData();
+                controller.printData();
             }
         });
 
