@@ -1,6 +1,5 @@
 
 import java.io.*;
-import java.lang.Object;
 
 
 public class HomeModel {
@@ -15,7 +14,7 @@ public class HomeModel {
     }
 
     public void printData(){
-        String name, height, weight, birthdate, bmi, bp, hr, bs, avgSleep, avgWorkout, avgWork, avgCalories, totCal, totSleep, totWO, totWork = "";
+        String name, height, weight, birthdate, bmi, bp, hr, bs, avgSleep, avgWorkout, avgWork, avgCalories, totCal, totSleep, totWO, totWork;
 
         //Get data from database
         name = "Zach Josephson";
@@ -35,13 +34,12 @@ public class HomeModel {
         totWO = "36hr";
         totWork = "127 hr";
 
-
         try {
             //HTML template from file
             File htmlTemplateFile = new File("template.html");
             BufferedReader bufferedReader = new BufferedReader(new FileReader(htmlTemplateFile));
             String htmlString = "";
-            String line = "";
+            String line;
 
             while((line = bufferedReader.readLine())!= null){
                 htmlString = htmlString + line + "\n";
