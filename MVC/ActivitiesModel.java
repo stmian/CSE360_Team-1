@@ -122,6 +122,7 @@ public class ActivitiesModel {
                 count = count + 1;
                 
                 //TODO use strings to add activity to database
+                //addActivity(int typeId, String typeName, Date date, double duration)
             }
             
             if(time.size() == 0){
