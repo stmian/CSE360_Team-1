@@ -1,18 +1,28 @@
 
 import javax.swing.JPanel;
 import java.io.*;
+import java.util.ArrayList;
+//import java.sql.Date;
+import java.util.Date;
+
 
 public class HomeController {
 
     //=================== Private properties/methods ===================//
     private HomeModel model;
     private HomeView view;
+    private ActivitiesController activity;
+    private UserController user;
+    private HealthController health;
 
     //=================== Public properties/methods ====================//
-    public HomeController(HomeModel model) {
+    public HomeController(HomeModel model, ActivitiesController activitiesController, UserController userController, HealthController healthController) {
         this.model = new HomeModel();
         this.view = new HomeView(this, this.model);
         this.view.createView();
+        activity = activitiesController;
+        user = userController;
+        health = healthController;
     }
 
     public JPanel getPanel() {
@@ -21,24 +31,84 @@ public class HomeController {
 
     public void printData(){
         String name, height, weight, birthdate, bmi, bp, hr, bs, avgSleep, avgWorkout, avgWork, avgCalories, totCal, totSleep, totWO, totWork;
+        double sleepDuration = 0;
+        double sleepCount = 0;
+        double workDuration = 0;
+        double workCount = 0;
+        double WODuration = 0;
+        double WOCount = 0;
+        String activityName;
+        double duration;
+
+
+        final ArrayList<Activity> array=activity.getActivities();
+        for(int i=0;i<array.size();i++)
+        {
+
+            activityName = array.get(i).typeName;
+            duration=array.get(i).duration;
+            if(activityName.equals("Sleep")){
+                sleepDuration += duration;
+                sleepCount += 1;
+            }
+            else if(activityName.equals("Work")){
+                workDuration += duration;
+                workCount += 1;
+            }
+            else if(activityName.equals("Workout")){
+                WODuration += duration;
+                WOCount += 1;
+            }
+
+        }
+
+        //User height in feet and inches
+        double heightCM = user.getHeight();
+        double heightSTD = heightCM * 0.393701;
+        int heightFT = (int) heightSTD / 12;
+        int heightINCH = (int) heightSTD % 12;
+
+        //Get health metrics
+        final ArrayList<HealthMetric> healthArray=health.gethealthMetrics();
+        String metricName = "";
+        double metricValue;
+        double rawWeight = 0;
+        Date weightDate = new Date(1);
+        Date metricDate = new Date(2);
+
+        for(int i=0;i<healthArray.size();i++)
+        {
+            metricName = healthArray.get(i).typeName;
+            metricValue = healthArray.get(i).metric ;
+            metricDate = healthArray.get(i).date;
+            if(metricName.equals("Weight") && metricDate.after(weightDate)){
+                rawWeight = metricValue;
+                weightDate = metricDate;
+            }
+
+        }
+
+
+
+
 
         //Get data from database
-        name = "Zach Josephson";
-        height = "6ft 2in";
-        weight = "200lbs";
-        birthdate = "02/28/1994";
+        name = user.getName();
+        height = String.valueOf(heightFT) + " ft. " + String.valueOf(heightINCH) + " in.";
+        weight = String.valueOf(rawWeight) + " lbs";
+        birthdate = String.valueOf(user.getBirthdate());
         bmi = "23.7";
         bp = "120/80";
         hr = "57";
         bs = "20";
-        avgSleep = "8hrs";
-        avgWorkout = "1hr";
-        avgWork = "7hr";
+        avgSleep = String.valueOf(sleepDuration/sleepCount) + " hr";
+        avgWorkout = String.valueOf(WODuration/WOCount) + " hr";
+        avgWork = String.valueOf(workDuration/workCount) + " hr";
         avgCalories = "1900";
         totCal = "170,000";
-        totSleep = "136hr";
-        totWO = "36hr";
-        totWork = "127 hr";
+        totSleep = String.valueOf(sleepDuration) + " hr";
+        totWO = String.valueOf(WODuration) + " hr";
+        totWork = String.valueOf(workDuration) + " hr";
 
         try {
             //HTML template from file
@@ -49,7 +119,6 @@ public class HomeController {
 
             while((line = bufferedReader.readLine())!= null){
                 htmlString = htmlString + line + "\n";
-                System.out.println(line);
             }
 
             //Replaces the appropriate tag in the template with the correct data

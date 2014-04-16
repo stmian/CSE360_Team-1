@@ -54,7 +54,7 @@ public class BeHealthy {
         JPanel activitiesPanel = activitiesController.getPanel();
 
         HomeModel homeModel = new HomeModel();
-        HomeController homeController = new HomeController(homeModel);
+        HomeController homeController = new HomeController(homeModel, activitiesController, userController, healthController);
         JPanel homePanel = homeController.getPanel();
 
         //Create tabbed pane
@@ -68,7 +68,7 @@ public class BeHealthy {
         mainFrame.setSize(500, 500);
         mainFrame.setTitle("BeHealthy");
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainFrame.setResizable(false);
+        mainFrame.setResizable(true);
         mainFrame.setVisible(true);
         mainFrame.add(mPane);
     } //main
