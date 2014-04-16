@@ -9,7 +9,7 @@ public class HomeController {
 
     //=================== Public properties/methods ====================//
     public HomeController(HomeModel model) {
-        this.model = model;
+        this.model = new HomeModel();
         this.view = new HomeView(this, this.model);
         this.view.createView();
     }
