@@ -13,45 +13,49 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JFileChooser;
 import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ActivitiesView implements ActionListener {
-
+    
     //Activities variables
     String[] activities = {"Sleep", "Eating", "Work", "Workout"};
     String[] units = {"hrs", "Cal", "hrs", "hrs"};
-
+    
+    
     //Components
     JLabel titleL, iconL, enterL, logL, unitsL;
     JComboBox activityCB;
     JTextField valueTF, dateTF;
-    JTextArea logTA;
+    JTable logTA;
     JButton addB, removeB, importB;
     JScrollPane scroll;
     JPanel activitiesPanel;
-
-    ActivitiesModel model;
+    
+    
     ActivitiesController controller;
-
-    public ActivitiesView(ActivitiesController controller, ActivitiesModel model) {
+    
+    
+    public ActivitiesView(ActivitiesController controller) {
         this.controller = controller;
-        this.model = model;
+        
     }
-
+    
     public void createView() {
         activitiesPanel = new JPanel();
         activitiesPanel.setLayout(new GridBagLayout());
-
+        
         //Initialize standard variables
         Font font_title = new Font("Calibri", Font.PLAIN, 30);
-
+        
         //Initialize components
         titleL = new JLabel("Keep track of daily activities");
         titleL.setFont(font_title);
@@ -65,14 +69,28 @@ public class ActivitiesView implements ActionListener {
         valueTF.setPreferredSize(new Dimension(90, 25));
         dateTF = new JTextField("2/8/14");
         dateTF.setPreferredSize(new Dimension(80, 25));
-
+        
         // TODO: Change this to a table and populate with ArrayList from controller.getActivities
-        logTA = new JTextArea();
+        String[] columnNames = {"Type",
+            "Duration",
+            "Date"};
+        final ArrayList<Activity> array=controller.getActivities();
+        final String[][] data= new String[50][3];
+        for(int i=0;i<array.size();i++)
+        {
+        	
+            data[i][0]=array.get(i).typeName;
+            data[i][1]=String.valueOf(array.get(i).duration);
+            data[i][2]=array.get(i).date.toString();
+            
+        }
+        logTA = new JTable(data,columnNames);
+        
         scroll = new JScrollPane(logTA);
         scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scroll.setPreferredSize(new Dimension(300, 230));
-
+        
         addB = new JButton("Add");
         addB.setPreferredSize(new Dimension(80, 25));
         addB.addActionListener(new ActionListener() {
@@ -80,29 +98,42 @@ public class ActivitiesView implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 try {
                     // TODO: view should pull activity types and include type ID as the key
-                    controller.addActivity(
-                            1,
-                            activityCB.getSelectedItem().toString(),
-                            new java.sql.Date(BeHealthy.dateParser.parse(dateTF.getText()).getTime()),
-                            Double.parseDouble(valueTF.getText())
-                    ); //addActivity
+                    if(controller.addActivity(
+                                              1,
+                                              activityCB.getSelectedItem().toString(),
+                                              new java.sql.Date(BeHealthy.dateParser.parse(dateTF.getText()).getTime()),
+                                              Double.parseDouble(valueTF.getText()))
+                       ); //addActivity
+                    {
+                        data[array.size()-1][0]=activityCB.getSelectedItem().toString();
+                        data[array.size()-1][1]=valueTF.getText();
+                        data[array.size()-1][2]=dateTF.getText();
+                    }
+                    logTA.updateUI();
                 } catch (ParseException ex) {
                     ex.printStackTrace();
                 } //try-catch
             } //actionPerformed
         });
-
+        
         // TODO: Change method calls to point to controller instead of model
         removeB = new JButton("Remove");
         removeB.setPreferredSize(new Dimension(80, 25));
         removeB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String[] temp = logTA.getSelectedText().split(" ");
-                model.removeActivity(Integer.parseInt(temp[0]));
+                
+                controller.removeActivity(array.get(logTA.getSelectedRow()).id);
+                for(int i=logTA.getSelectedRow();i<controller.getActivities().size();i++)
+                {
+                	data[i][0]=data[i+1][0];
+                    data[i][1]=data[i+1][1];
+                    data[i][2]=data[i+1][2];
+                }
+                logTA.updateUI();
             }
         });
-
+        
         importB = new JButton("Import");
         importB.addActionListener(new ActionListener() {
             @Override
@@ -112,19 +143,19 @@ public class ActivitiesView implements ActionListener {
                 int returnVal = fc.showOpenDialog(null);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     file = fc.getSelectedFile();
-                    model.importActivity(file);
+                    controller.importActivity(file);
                 } else {
                     return;
                 }
-
+                
             }
         });
-
+        
         //Used for padding around components
         int[] inset = {5, 5, 5, 5};
         int[] inset2 = {108, 5, 5, 5}; //Remove button
         int[] inset3 = {0, 5, 28, 5}; //Title/icon
-
+        
         //Add components
         addItem(activitiesPanel, iconL, 0, 0, 1, 1, inset3, GridBagConstraints.WEST);
         addItem(activitiesPanel, titleL, 1, 0, 4, 1, inset3, GridBagConstraints.WEST);
@@ -139,11 +170,11 @@ public class ActivitiesView implements ActionListener {
         addItem(activitiesPanel, removeB, 4, 4, 1, 1, inset2, GridBagConstraints.CENTER);
         addItem(activitiesPanel, importB, 4, 5, 1, 1, inset, GridBagConstraints.CENTER);
     }
-
+    
     public JPanel getPanel() {
         return this.activitiesPanel;
     }
-
+    
     public void addItem(JPanel p, JComponent c, int x, int y, int width, int height, int[] inset, int align) {
         GridBagConstraints gc = new GridBagConstraints();
         gc.gridx = x;
@@ -157,7 +188,7 @@ public class ActivitiesView implements ActionListener {
         gc.fill = GridBagConstraints.NONE;
         p.add(c, gc);
     }
-
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

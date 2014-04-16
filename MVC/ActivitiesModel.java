@@ -13,86 +13,85 @@ import java.io.FileNotFoundException;
 public class ActivitiesModel {
     //=================== Private properties/methods ===================//
     private ArrayList<Activity> activities;
-
+    
     //=================== Public properties/methods ====================//
     public ActivitiesModel() {
         Statement query = null;
         ResultSet resultSet = null;
         activities = new ArrayList<Activity>();
-
+        
         try {
             query = BeHealthy.conn.createStatement();
             resultSet = query.executeQuery("SELECT a.*, at.name AS typeName FROM activities a, activity_types at WHERE a.typeId = at.id");
-
+            
             while (resultSet.next()) {
                 activities.add(new Activity(
-                        resultSet.getInt("id"),
-                        resultSet.getInt("typeId"),
-                        resultSet.getString("typeName"),
-                        resultSet.getDate("date"),
-                        resultSet.getDouble("value")
-                )); //activities
+                                            resultSet.getInt("id"),
+                                            resultSet.getInt("typeId"),
+                                            resultSet.getString("typeName"),
+                                            resultSet.getDate("date"),
+                                            resultSet.getDouble("value")
+                                            )); //activities
             } //while
         } catch (SQLException e) {
             e.printStackTrace();
         } //try-catch
     } //__constructor
-
+    
     public ArrayList<Activity> getActivities() {
         return activities;
     } //getActivities
-
+    
     public boolean addActivity(int typeId, String typeName, Date date, double duration) {
         PreparedStatement query = null;
         ResultSet resultSet = null;
         java.sql.Date date_sql = new java.sql.Date(date.getTime());
-
+        
         try {
             query = BeHealthy.conn.prepareStatement("INSERT INTO activities (userId, typeId, date, value) VALUES (?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
             query.setInt(1, BeHealthy.getCurrentUserId());
             query.setInt(2, typeId);
             query.setDate(3, date_sql);
             query.setDouble(4, duration);
-
+            
             // Insert into table and returns new ID
             query.executeUpdate();
             resultSet = query.getGeneratedKeys();
             resultSet.next();
             int newId = resultSet.getInt(1);
-
+            
             activities.add(new Activity(
-                    newId,
-                    typeId,
-                    typeName,
-                    date,
-                    duration
-            )); //activities
-
+                                        newId,
+                                        typeId,
+                                        typeName,
+                                        date,
+                                        duration
+                                        )); //activities
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         } //try-catch
     } //addActivity
-
+    
     public boolean removeActivity(int id) {
         PreparedStatement query = null;
         ResultSet resultSet = null;
-
+        
         try {
-            query = BeHealthy.conn.prepareStatement("DELETE FROM activities WHERE id = ?)");
+            query = BeHealthy.conn.prepareStatement("DELETE FROM activities WHERE id = ?");
             query.setInt(1, id);
             query.executeUpdate();
-
+            
             // TODO: Remove activity from array list
-
+            
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         } //try-catch
     }
-
+    
     public boolean importActivity(File file) {
         try {
             Scanner scanner = new Scanner(file);
@@ -100,7 +99,7 @@ public class ActivitiesModel {
             ArrayList<String> active = new ArrayList<String>();
             int count = 0;
             int falseCount = 0;
-
+            
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
                 line = line.trim();
@@ -121,7 +120,7 @@ public class ActivitiesModel {
                 active.add(lineParts[1]);
                 System.out.println("Time: " + time.get(count) + " Active: " + active.get(count));
                 count = count + 1;
-
+                
                 //TODO use strings to add activity to database
             }
             
@@ -138,7 +137,7 @@ public class ActivitiesModel {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-
+            
             String stopTimeString = time.get(time.size() - 1);
             Date stopDate = null;
             try {
@@ -147,18 +146,18 @@ public class ActivitiesModel {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-
+            
             if (stopDate.getTime() < startDate.getTime()) {
                 Calendar c = Calendar.getInstance();
                 c.setTime(stopDate);
                 c.add(Calendar.DATE, 1);
                 stopDate = c.getTime();
             }
-
+            
             long difference = stopDate.getTime() - startDate.getTime();
             double conversionFactor = 1000 * 60 * 60;
             double differenceHours = (double) (difference / conversionFactor);
-
+            
             Calendar c = Calendar.getInstance();
             Date current = c.getTime();
             System.out.println(differenceHours);
@@ -169,9 +168,9 @@ public class ActivitiesModel {
             return false;
         }
     }
-
+    
     public void updateActivity(int id, int typeId, double duration, Date date) {
         // TODO: Add database call
     } //updateActivity
-
+    
 }
