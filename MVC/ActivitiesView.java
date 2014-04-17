@@ -74,14 +74,14 @@ public class ActivitiesView implements ActionListener {
         String[] columnNames = {"Type",
             "Duration",
             "Date"};
-        final ArrayList<Activity> array=controller.getActivities();
+        
         final String[][] data= new String[50][3];
-        for(int i=0;i<array.size();i++)
+        for(int i=0;i<controller.getActivities().size();i++)
         {
         	
-            data[i][0]=array.get(i).typeName;
-            data[i][1]=String.valueOf(array.get(i).duration);
-            data[i][2]=array.get(i).date.toString();
+            data[i][0]=controller.getActivities().get(i).typeName;
+            data[i][1]=String.valueOf(controller.getActivities().get(i).duration);
+            data[i][2]=controller.getActivities().get(i).date.toString();
             
         }
         logTA = new JTable(data,columnNames);
@@ -97,19 +97,19 @@ public class ActivitiesView implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    // TODO: view should pull activity types and include type ID as the key
-                    if(controller.addActivity(
+                	if(controller.addActivity(
                                               1,
                                               activityCB.getSelectedItem().toString(),
                                               new java.sql.Date(BeHealthy.dateParser.parse(dateTF.getText()).getTime()),
                                               Double.parseDouble(valueTF.getText()))
                        ); //addActivity
                     {
-                        data[array.size()-1][0]=activityCB.getSelectedItem().toString();
-                        data[array.size()-1][1]=valueTF.getText();
-                        data[array.size()-1][2]=dateTF.getText();
+                        data[controller.getActivities().size()-1][0]=activityCB.getSelectedItem().toString();
+                        data[controller.getActivities().size()-1][1]=valueTF.getText();
+                        data[controller.getActivities().size()-1][2]=dateTF.getText();
                     }
                     logTA.updateUI();
+            		
                 } catch (ParseException ex) {
                     ex.printStackTrace();
                 } //try-catch
@@ -122,15 +122,19 @@ public class ActivitiesView implements ActionListener {
         removeB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                
-                controller.removeActivity(array.get(logTA.getSelectedRow()).id);
-                for(int i=logTA.getSelectedRow();i<controller.getActivities().size();i++)
-                {
-                	data[i][0]=data[i+1][0];
-                    data[i][1]=data[i+1][1];
-                    data[i][2]=data[i+1][2];
+            	if(logTA.getSelectedRow()<controller.getActivities().size())
+        		{
+                	
+                    controller.removeActivity(controller.getActivities().get(logTA.getSelectedRow()).id);
+                    for(int i=logTA.getSelectedRow();i<controller.getActivities().size();i++)
+                    {
+                        data[i][0]=data[i+1][0];
+                        data[i][1]=data[i+1][1];
+                        data[i][2]=data[i+1][2];
+                    }
+                    logTA.updateUI();
+                    controller.getActivities().remove(logTA.getSelectedRow());
                 }
-                logTA.updateUI();
             }
         });
         

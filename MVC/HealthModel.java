@@ -29,19 +29,19 @@ public class HealthModel {
                 // TODO: Change this to add Activities to the collection without the add method. This is only used to add new records.
                 int typeId=res.getInt("typeid");
                 String name="";
-                if(typeId==0)
+                if(typeId==1)
                 {
                     name="Weight";
                 }
-                if(typeId==1)
+                if(typeId==2)
                 {
                     name="Blood Pressure";
                 }
-                if(typeId==2)
+                if(typeId==3)
                 {
                     name="Blood Sugar";
                 }
-                if(typeId==3)
+                if(typeId==4)
                 {
                     name="Heart Rate";
                 }
@@ -66,19 +66,19 @@ public class HealthModel {
     }
     public boolean addHealthMetric(int typeId,double metric, Date date) {
     	String name="";
-    	if(typeId==0)
+    	if(typeId==1)
     	{
     		name="Weight";
     	}
-    	if(typeId==1)
+    	if(typeId==2)
     	{
     		name="Blood Pressure";
     	}
-    	if(typeId==2)
+    	if(typeId==3)
     	{
     		name="Blood Sugar";
     	}
-    	if(typeId==3)
+    	if(typeId==4)
     	{
     		name="Heart Rate";
     	}
