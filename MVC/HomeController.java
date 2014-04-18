@@ -1,5 +1,10 @@
 
 import javax.swing.JPanel;
+
+import org.jfree.chart.ChartUtilities;
+import org.jfree.chart.JFreeChart;
+
+import java.awt.Dimension;
 import java.io.*;
 import java.util.ArrayList;
 //import java.sql.Date;
@@ -14,6 +19,7 @@ public class HomeController {
     private ActivitiesController activity;
     private UserController user;
     private HealthController health;
+    final private int IMAGE_OFFSET = 30;
 
     //=================== Public properties/methods ====================//
     public HomeController(HomeModel model, ActivitiesController activitiesController, UserController userController, HealthController healthController) {
@@ -146,8 +152,30 @@ public class HomeController {
         catch(FileNotFoundException e){}
         catch(UnsupportedEncodingException e) {}
         catch (IOException e) {}
-
-
+    }
+    
+    public void chartsToImages(JFreeChart pie, JFreeChart weight, JFreeChart calories){
+    	File pieFile = new File("piechart.png");
+    	File weightFile = new File("linechartweight.png");
+    	File calFile = new File("linechartcalories.png");
+    	
+    	try {
+    		FileOutputStream fout = new FileOutputStream(pieFile);
+			ChartUtilities.writeChartAsPNG(fout, pie, HomeView.CHART_DIMS[0] + IMAGE_OFFSET,HomeView.CHART_DIMS[1] + IMAGE_OFFSET);
+			
+			fout = new FileOutputStream(weightFile);
+			ChartUtilities.writeChartAsPNG(fout, weight, HomeView.CHART_DIMS[0] + IMAGE_OFFSET,HomeView.CHART_DIMS[1] + IMAGE_OFFSET);
+			
+			fout = new FileOutputStream(calFile);
+			ChartUtilities.writeChartAsPNG(fout, calories, HomeView.CHART_DIMS[0],HomeView.CHART_DIMS[1] + IMAGE_OFFSET);
+			
+			fout.close();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
     }
 
 

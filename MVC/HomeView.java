@@ -23,11 +23,15 @@ public class HomeView implements ActionListener {
     private JPanel homePanel;
     private JPanel graphP;
 
+    //MVCs
     HomeModel model;
     HomeController controller;
     PieChartView pieChart;
     LineChartWeightView lineWeight;
     LineChartCaloriesView lineCalories;
+    
+    //Constants
+    final public static int[] CHART_DIMS = {178, 178};
 
     //Stats variables
     double height, weight, heartrate, bloodsugar, sleep, workout,
@@ -45,6 +49,8 @@ public class HomeView implements ActionListener {
         pieChart = new PieChartView();
         lineWeight = new LineChartWeightView();
         lineCalories = new LineChartCaloriesView();
+        
+        controller.chartsToImages(pieChart.getChart(), lineWeight.getChart(), lineCalories.getChart());
 
         //Initialize standard variables
         ButtonListener bl = new ButtonListener();
