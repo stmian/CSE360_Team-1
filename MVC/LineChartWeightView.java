@@ -1,9 +1,15 @@
 import java.awt.Color;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.swing.*;
 
 import org.jfree.chart.*;
 import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.axis.SymbolAxis;
+import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
@@ -12,8 +18,11 @@ import org.jfree.data.xy.*;
 public class LineChartWeightView  extends JPanel{
 
 	JFreeChart chart;
+	private HealthModel model;
+	String[] date;
 
 	public LineChartWeightView(){
+		model = new HealthModel();
 		XYDataset dataset = createDataset();
 
 		chart = createChart(dataset);
@@ -23,30 +32,37 @@ public class LineChartWeightView  extends JPanel{
 	}
 
 	private XYDataset createDataset(){
-		final int MAX = 90; //maximum number of entries to read in
-		int entries = 20; //number of entries in DB
-		int start = 0; //starting location to read in to arrays
-		int[] date;
+		int entries = 0; //number of entries in DB
+		int[] d;
 		double[] weight;
+		ArrayList<HealthMetric> health=model.gethealthMetrics();
+		Calendar cal = Calendar.getInstance();
 
 		//TODO: Get number of entries from DB
-
-		if(entries > MAX){
-			start = entries - MAX;
-			entries = MAX;
+		for(int i=0; i<health.size();i++){
+			if(health.get(i).typeName.equals("Weight")){
+				entries++;
+			}
 		}
 
-		date = new int[entries];
+		date = new String[entries];
 		weight = new double[entries];
+		d = new int[entries];		
 
-		for(int i=start; i<entries; i++){
-			date[i] = i+1; //TODO: Read in last 90 entries
-			weight[i] = 200 - (i + (int)(Math.random() * 1.5)); //TODO: Read in last 90 entries
+		int x=-1;
+		for(int i=0; i<health.size(); i++){
+			if(health.get(i).typeName.equals("Weight")){
+				x++;
+				cal.setTime(health.get(i).date);
+				date[x] = (Integer.toString(cal.get(Calendar.MONTH))+Integer.toString(cal.get(Calendar.DAY_OF_MONTH))+Integer.toString(cal.get(Calendar.YEAR)));
+				d[x] = x+1;
+				weight[x] = health.get(i).metric;
+			}
 		}
 
 		XYSeries series1 = new XYSeries("Weight");
 		for(int i=0; i<entries; i++){
-			series1.add(date[i], weight[i]);
+			series1.add(d[i], weight[i]);
 		}
 
 		final XYSeriesCollection dataset = new XYSeriesCollection();
@@ -71,7 +87,7 @@ public class LineChartWeightView  extends JPanel{
 
 		chart.setBackgroundPaint(null);
 
-		// get a reference to the plot for further customisation...
+		// get a reference to the plot for further customization...
 		final XYPlot plot = chart.getXYPlot();
 		plot.setBackgroundPaint(null);
 		plot.setDomainGridlinePaint(Color.gray);
@@ -83,9 +99,10 @@ public class LineChartWeightView  extends JPanel{
 		plot.setRenderer(renderer);
 
 		// change the auto tick unit selection to integer units only...
-		final NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
-		rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
-
+		final ValueAxis domain = new SymbolAxis("Dates", date);
+		domain.setVerticalTickLabels(true);
+		plot.setDomainAxis(domain);
+		
 		return chart;
 	}
 	

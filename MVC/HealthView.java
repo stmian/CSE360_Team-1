@@ -24,7 +24,7 @@ public class HealthView implements ActionListener {
     
     //Activities variables
     String[] activities = {"Weight", "Blood Pressure", "Blood Sugar", "Heart Rate"};
-    String[] units = {"lbs", "", "mg/dL", "bpm"};
+    String[] units = {"lbs ", "    ", "mg/dL", "bpm "};
     
     //Components
     JLabel titleL, iconL, enterL, logL, unitsL;
@@ -59,6 +59,12 @@ public class HealthView implements ActionListener {
         unitsL = new JLabel(units[0]);
         metricCB = new JComboBox(activities);
         metricCB.setPreferredSize(new Dimension(110, 25));
+        metricCB.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                unitsL.setText(units[metricCB.getSelectedIndex()]);
+            } //actionPerformed
+        });
         valueTF = new JTextField();
         valueTF.setPreferredSize(new Dimension(90, 25));
         dateTF = new JTextField("2/8/14");

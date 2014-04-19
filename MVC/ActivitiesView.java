@@ -65,6 +65,13 @@ public class ActivitiesView implements ActionListener {
         unitsL = new JLabel(units[0]);
         activityCB = new JComboBox(activities);
         activityCB.setPreferredSize(new Dimension(110, 25));
+        activityCB.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	 unitsL.setText(units[activityCB.getSelectedIndex()]);
+            } //actionPerformed
+        });
+        
         valueTF = new JTextField();
         valueTF.setPreferredSize(new Dimension(90, 25));
         dateTF = new JTextField("2/8/14");
@@ -98,7 +105,7 @@ public class ActivitiesView implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 try {
                 	if(controller.addActivity(
-                                              1,
+                			 				  activityCB.getSelectedIndex()+1,
                                               activityCB.getSelectedItem().toString(),
                                               new java.sql.Date(BeHealthy.dateParser.parse(dateTF.getText()).getTime()),
                                               Double.parseDouble(valueTF.getText()))

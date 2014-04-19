@@ -71,6 +71,8 @@ public class BeHealthy {
         mainFrame.setResizable(true);
         mainFrame.setVisible(true);
         mainFrame.add(mPane);
+        
+        mainFrame.revalidate();
     } //main
 
     /**

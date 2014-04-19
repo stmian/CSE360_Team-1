@@ -1,19 +1,26 @@
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.Calendar;
 
 import javax.swing.*;
 
 import org.jfree.chart.*;
 import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.axis.SymbolAxis;
+import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.xy.*;
 
 public class LineChartCaloriesView  extends JPanel{
-	
+
 	JFreeChart chart;
-	
+	private ActivitiesModel model;
+	String[] date;
+
 	public LineChartCaloriesView(){
+		model = new ActivitiesModel();
 		XYDataset dataset = createDataset();
 
 		chart = createChart(dataset);
@@ -23,30 +30,37 @@ public class LineChartCaloriesView  extends JPanel{
 	}
 
 	private XYDataset createDataset(){
-		final int MAX = 90; //maximum number of entries to read in
-		int entries = 20; //number of entries in DB
-		int start = 0; //starting location to read in to arrays
-		int[] date;
+		int entries = 0; //number of entries in DB
+		int[] d;
 		double[] calories;
+		ArrayList<Activity> activity=model.getActivities();
+		Calendar cal = Calendar.getInstance();
 
 		//TODO: Get number of entries from DB
-
-		if(entries > MAX){
-			start = entries - MAX;
-			entries = MAX;
+		for(int i=0; i<activity.size();i++){
+			if(activity.get(i).typeName.equals("Eating")){
+				entries++;
+			}
 		}
-
-		date = new int[entries];
+		
+		date = new String[entries];
+		d = new int[entries];
 		calories = new double[entries];
 
-		for(int i=start; i<entries; i++){
-			date[i] = i+1; //TODO: Read in last 90 entries
-			calories[i] = 2500 - (i * (int)(Math.random() * 50)); //TODO: Read in last 90 entries
+		int x=-1;
+		for(int i=0; i<activity.size(); i++){
+			if(activity.get(i).typeName.equals("Eating")){
+				x++;
+				cal.setTime(activity.get(i).date);
+				d[x] = x+1;
+				date[x] = (Integer.toString(cal.get(Calendar.MONTH))+Integer.toString(cal.get(Calendar.DAY_OF_MONTH))+Integer.toString(cal.get(Calendar.YEAR)));
+				calories[x] = activity.get(i).duration;
+			}
 		}
 
 		XYSeries series1 = new XYSeries("Calories");
 		for(int i=0; i<entries; i++){
-			series1.add(date[i], calories[i]);
+			series1.add(d[i], calories[i]);
 		}
 
 		final XYSeriesCollection dataset = new XYSeriesCollection();
@@ -83,8 +97,9 @@ public class LineChartCaloriesView  extends JPanel{
 		plot.setRenderer(renderer);
 
 		// change the auto tick unit selection to integer units only...
-		final NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
-		rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+		final ValueAxis domain = new SymbolAxis("Dates", date);
+		domain.setVerticalTickLabels(true);
+		plot.setDomainAxis(domain);
 
 		return chart;
 
