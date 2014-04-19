@@ -46,11 +46,9 @@ public class HomeView implements ActionListener {
     public void createView() {
         homePanel = new JPanel();
         homePanel.setLayout(new GridBagLayout());
-        pieChart = new PieChartView();
         lineWeight = new LineChartWeightView();
         lineCalories = new LineChartCaloriesView();
-        
-        controller.chartsToImages(pieChart.getChart(), lineWeight.getChart(), lineCalories.getChart());
+        pieChart = new PieChartView();        
 
         //Initialize standard variables
         ButtonListener bl = new ButtonListener();
@@ -80,6 +78,7 @@ public class HomeView implements ActionListener {
         printB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+            	controller.chartsToImages(pieChart.getChart(), lineWeight.getChart(), lineCalories.getChart());
                 controller.printData();
             }
         });
@@ -89,7 +88,8 @@ public class HomeView implements ActionListener {
         graph1B.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {                
-                graphP.removeAll();
+                lineWeight = new LineChartWeightView();
+            	graphP.removeAll();
                 graphP.add(lineWeight);
                 graphP.getParent().revalidate();
                 graphP.repaint();
@@ -101,6 +101,7 @@ public class HomeView implements ActionListener {
         graph2B.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                lineCalories = new LineChartCaloriesView();
             	graphP.removeAll();
                 graphP.add(lineCalories);
                 graphP.getParent().revalidate();
@@ -112,7 +113,8 @@ public class HomeView implements ActionListener {
         graph3B.setPreferredSize(new Dimension(90, 25));
         graph3B.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {             
+            public void actionPerformed(ActionEvent e) {
+                pieChart = new PieChartView();
                 graphP.removeAll();
                 graphP.add(pieChart);
                 graphP.getParent().revalidate();
