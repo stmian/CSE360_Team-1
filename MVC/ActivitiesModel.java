@@ -95,15 +95,17 @@ public class ActivitiesModel {
     public boolean importActivity(File file) {
         try {
             Scanner scanner = new Scanner(file);
-            ArrayList<String> time = new ArrayList<String>();
-            ArrayList<String> active = new ArrayList<String>();
+           // ArrayList<String> time = new ArrayList<String>();
+            //ArrayList<String> active = new ArrayList<String>();
             int count = 0;
-            int falseCount = 0;
+            //int falseCount = 0;
             
             while (scanner.hasNextLine()) {
+
                 String line = scanner.nextLine();
                 line = line.trim();
-                String[] lineParts = line.split(",");
+                String[] inputLine = line.split(",");
+/*
                 if(lineParts[1].equals("-1")){
                 	falseCount += 1;
                 }
@@ -116,19 +118,43 @@ public class ActivitiesModel {
                 	System.out.println("Inactive");
                 	break;
                 }
-                time.add(lineParts[0]);
-                active.add(lineParts[1]);
+                //time.add(lineParts[0]);
+                //active.add(lineParts[1]);
                 System.out.println("Time: " + time.get(count) + " Active: " + active.get(count));
-                count = count + 1;
-                
+                //count = count + 1;
+         */
+                String type = inputLine[0];
+                int time = Integer.parseInt(inputLine[1]);
+                Date inputDate;
+
+                if(inputLine.length < 3) {
+
+                    Calendar c = Calendar.getInstance();
+                    inputDate = c.getTime();
+                    //System.out.println(differenceHours);
+                    System.out.println(inputDate);
+                }
+                else {
+
+                    //inputDate = inputLine[2];
+                    Calendar d = Calendar.getInstance();
+                    inputDate = d.getTime();
+                    System.out.println("ELSE" + inputDate);
+                }
+                System.out.println(inputLine[0]);
+                System.out.println(inputLine[1]);
+                System.out.println(inputLine[2]);
+
+
                 //TODO use strings to add activity to database
-                //addActivity(int typeId, String typeName, Date date, double duration)
+               addActivity(BeHealthy.getCurrentUserId(), type, inputDate, time);
+               //addActivity(BeHealthy.getCurrentUserId(), type, inputDate, time);
             }
             
-            if(time.size() == 0){
-            	return false;
-            }
-            
+           // if(time.size() == 0){
+           // 	return false;
+           // }
+            /*
             String startTimeString = time.get(0);
             SimpleDateFormat sdf = new SimpleDateFormat("hh:mm");
             Date startDate = null;
@@ -154,16 +180,28 @@ public class ActivitiesModel {
                 c.add(Calendar.DATE, 1);
                 stopDate = c.getTime();
             }
-            
-            long difference = stopDate.getTime() - startDate.getTime();
-            double conversionFactor = 1000 * 60 * 60;
-            double differenceHours = (double) (difference / conversionFactor);
-            
-            Calendar c = Calendar.getInstance();
-            Date current = c.getTime();
-            System.out.println(differenceHours);
-            //addActivity("Sleep", differenceHours, current);		//TODO Uncomment once addActivity functionality is complete
+            */
+           // long difference = stopDate.getTime() - startDate.getTime();
+           // double conversionFactor = 1000 * 60 * 60;
+           // double differenceHours = (double) (difference / conversionFactor);
+/*
+            String type = input[0];
+            int time = (int) input[1];
+
+          if(input.length() < 3) {
+
+              Calendar c = Calendar.getInstance();
+              Date inputDate = c.getTime();
+              //System.out.println(differenceHours);
+          }
+          else {
+
+              String inputDate = input[2];
+          }
+             // addActivity(type, time, inputDate);		//TODO Uncomment once addActivity functionality is complete
+*/
             return true;
+
         } catch (FileNotFoundException e1) {
             e1.printStackTrace();
             return false;
