@@ -71,7 +71,7 @@ public class UserView implements ActionListener {
 
         messageTA = new JTextArea("                 Start by entering a little bit of information about yourself."
                 + "\n    Track your daily activities in the Activities tab. Track you health day "
-                + "\nto day in the �Health� tab.  View and print a summary in the Home tab.");
+                + "\nto day in the Health tab.  View and print a summary in the Home tab.");
         messageTA.setBackground(null);
         messageTA.setEditable(false);
 

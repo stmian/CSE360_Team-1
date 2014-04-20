@@ -1,9 +1,13 @@
-
 import javax.swing.JPanel;
+import org.jfree.chart.ChartUtilities;
+import org.jfree.chart.JFreeChart;
+import java.awt.Dimension;
 import java.io.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-//import java.sql.Date;
 import java.util.Date;
+import java.net.*;
 
 
 public class HomeController {
@@ -14,6 +18,7 @@ public class HomeController {
     private ActivitiesController activity;
     private UserController user;
     private HealthController health;
+    final private int IMAGE_OFFSET = 30;
 
     //=================== Public properties/methods ====================//
     public HomeController(HomeModel model, ActivitiesController activitiesController, UserController userController, HealthController healthController) {
@@ -31,6 +36,7 @@ public class HomeController {
 
     public void printData(){
         String name, height, weight, birthdate, bmi, bp, hr, bs, avgSleep, avgWorkout, avgWork, avgCalories, totCal, totSleep, totWO, totWork;
+        String currentDate;
         double sleepDuration = 0;
         double sleepCount = 0;
         double workDuration = 0;
@@ -88,11 +94,17 @@ public class HomeController {
 
         }
 
+        //Get current date
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        Date date = new Date();
+
+
 
 
 
 
         //Get data from database
+        currentDate = String.valueOf(dateFormat.format(date));
         name = user.getName();
         height = String.valueOf(heightFT) + " ft. " + String.valueOf(heightINCH) + " in.";
         weight = String.valueOf(rawWeight) + " lbs";
@@ -111,9 +123,9 @@ public class HomeController {
         totWork = String.valueOf(workDuration) + " hr";
 
         try {
-            //HTML template from file
-            File htmlTemplateFile = new File("template.html");
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(htmlTemplateFile));
+            //HTML template from file at URL
+            URL template = new URL("https://dl.dropboxusercontent.com/u/9366248/template.html");
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(template.openStream()));
             String htmlString = "";
             String line;
 
@@ -122,6 +134,7 @@ public class HomeController {
             }
 
             //Replaces the appropriate tag in the template with the correct data
+            htmlString = htmlString.replace("$reportDate", currentDate);
             htmlString = htmlString.replace("$name", name);
             htmlString = htmlString.replace("$height", height);
             htmlString = htmlString.replace("$weight", weight);
@@ -146,8 +159,30 @@ public class HomeController {
         catch(FileNotFoundException e){}
         catch(UnsupportedEncodingException e) {}
         catch (IOException e) {}
-
-
+    }
+    
+    public void chartsToImages(JFreeChart pie, JFreeChart weight, JFreeChart calories){
+    	File pieFile = new File("piechart.png");
+    	File weightFile = new File("linechartweight.png");
+    	File calFile = new File("linechartcalories.png");
+    	
+    	try {
+    		FileOutputStream fout = new FileOutputStream(pieFile);
+			ChartUtilities.writeChartAsPNG(fout, pie, HomeView.CHART_DIMS[0] + IMAGE_OFFSET,HomeView.CHART_DIMS[1] + IMAGE_OFFSET);
+			
+			fout = new FileOutputStream(weightFile);
+			ChartUtilities.writeChartAsPNG(fout, weight, HomeView.CHART_DIMS[0] + IMAGE_OFFSET,HomeView.CHART_DIMS[1] + IMAGE_OFFSET);
+			
+			fout = new FileOutputStream(calFile);
+			ChartUtilities.writeChartAsPNG(fout, calories, HomeView.CHART_DIMS[0],HomeView.CHART_DIMS[1] + IMAGE_OFFSET);
+			
+			fout.close();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
     }
 
 

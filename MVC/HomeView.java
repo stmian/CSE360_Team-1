@@ -16,14 +16,22 @@ public class HomeView implements ActionListener {
 
     //For Box see JFD p622
     //Components
-    private JLabel titleL, iconL, graphL;
+    private JLabel titleL, iconL;
     private JButton printB, graph1B, graph2B, graph3B;
     private JTable statsT;
     private Object[][] statsObj;
-    JPanel homePanel;
+    private JPanel homePanel;
+    private JPanel graphP;
 
+    //MVCs
     HomeModel model;
     HomeController controller;
+    PieChartView pieChart;
+    LineChartWeightView lineWeight;
+    LineChartCaloriesView lineCalories;
+    
+    //Constants
+    final public static int[] CHART_DIMS = {178, 178};
 
     //Stats variables
     double height, weight, heartrate, bloodsugar, sleep, workout,
@@ -38,6 +46,9 @@ public class HomeView implements ActionListener {
     public void createView() {
         homePanel = new JPanel();
         homePanel.setLayout(new GridBagLayout());
+        lineWeight = new LineChartWeightView();
+        lineCalories = new LineChartCaloriesView();
+        pieChart = new PieChartView();        
 
         //Initialize standard variables
         ButtonListener bl = new ButtonListener();
@@ -53,7 +64,8 @@ public class HomeView implements ActionListener {
         titleL = new JLabel("BeHealthy");
         titleL.setFont(font_title);
         iconL = new JLabel(new ImageIcon("logo1.png"));
-        graphL = new JLabel(new ImageIcon("ExGraph1.png"));
+        graphP = new JPanel();
+        graphP.add(lineWeight);        
         statsT = new JTable(statsObj, headers);
         statsT.setBackground(null);
         statsT.setShowGrid(false);
@@ -66,6 +78,7 @@ public class HomeView implements ActionListener {
         printB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+            	controller.chartsToImages(pieChart.getChart(), lineWeight.getChart(), lineCalories.getChart());
                 controller.printData();
             }
         });
@@ -74,9 +87,12 @@ public class HomeView implements ActionListener {
         graph1B.setPreferredSize(new Dimension(90, 25));
         graph1B.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                // TODO Auto-generated method stub
-
+            public void actionPerformed(ActionEvent e) {                
+                lineWeight = new LineChartWeightView();
+            	graphP.removeAll();
+                graphP.add(lineWeight);
+                graphP.getParent().revalidate();
+                graphP.repaint();
             }
         });
 
@@ -85,8 +101,11 @@ public class HomeView implements ActionListener {
         graph2B.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO Auto-generated method stub
-
+                lineCalories = new LineChartCaloriesView();
+            	graphP.removeAll();
+                graphP.add(lineCalories);
+                graphP.getParent().revalidate();
+                graphP.repaint();
             }
         });
 
@@ -95,8 +114,11 @@ public class HomeView implements ActionListener {
         graph3B.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO Auto-generated method stub
-
+                pieChart = new PieChartView();
+                graphP.removeAll();
+                graphP.add(pieChart);
+                graphP.getParent().revalidate();
+                graphP.repaint();
             }
         });
 
@@ -110,7 +132,7 @@ public class HomeView implements ActionListener {
         addItem(homePanel, iconL, 0, 0, 1, 1, inset3, GridBagConstraints.WEST);
         addItem(homePanel, titleL, 1, 0, 3, 1, inset3, GridBagConstraints.WEST);
         addItem(homePanel, mPanel, 0, 1, 4, 1, inset, GridBagConstraints.CENTER);
-        addItem(homePanel, graphL, 0, 2, 4, 1, inset, GridBagConstraints.CENTER);
+        addItem(homePanel, graphP, 0, 2, 4, 1, inset, GridBagConstraints.CENTER);
         addItem(homePanel, graph1B, 0, 3, 1, 1, inset4, GridBagConstraints.SOUTH);
         addItem(homePanel, graph2B, 1, 3, 1, 1, inset4, GridBagConstraints.SOUTH);
         addItem(homePanel, graph3B, 2, 3, 1, 1, inset4, GridBagConstraints.SOUTH);

@@ -24,7 +24,7 @@ public class HealthView implements ActionListener {
     
     //Activities variables
     String[] activities = {"Weight", "Blood Pressure", "Blood Sugar", "Heart Rate"};
-    String[] units = {"lbs", "", "mg/dL", "bpm"};
+    String[] units = {"lbs ", "    ", "mg/dL", "bpm "};
     
     //Components
     JLabel titleL, iconL, enterL, logL, unitsL;
@@ -59,6 +59,12 @@ public class HealthView implements ActionListener {
         unitsL = new JLabel(units[0]);
         metricCB = new JComboBox(activities);
         metricCB.setPreferredSize(new Dimension(110, 25));
+        metricCB.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                unitsL.setText(units[metricCB.getSelectedIndex()]);
+            } //actionPerformed
+        });
         valueTF = new JTextField();
         valueTF.setPreferredSize(new Dimension(90, 25));
         dateTF = new JTextField("2/8/14");
@@ -67,14 +73,15 @@ public class HealthView implements ActionListener {
         String[] columnNames = {"Type",
             "Metric",
             "Date"};
-        final ArrayList<HealthMetric> array=controller.gethealthMetrics();
+        
+        
         final String[][] data= new String[50][3];
-        for(int i=0;i<array.size();i++)
+        for(int i=0;i<controller.gethealthMetrics().size();i++)
         {
         	
-            data[i][0]=array.get(i).typeName;
-            data[i][1]=String.valueOf(array.get(i).metric);
-            data[i][2]=String.valueOf(array.get(i).date);
+            data[i][0]=controller.gethealthMetrics().get(i).typeName;
+            data[i][1]=String.valueOf(controller.gethealthMetrics().get(i).metric);
+            data[i][2]=String.valueOf(controller.gethealthMetrics().get(i).date);
             
         }
         logTA = new JTable(data,columnNames);
@@ -90,20 +97,20 @@ public class HealthView implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
             	try {
-                    // TODO: view should pull activity types and include type ID as the key
+            		
                     if(controller.addHealthMetric(
-                                                  metricCB.getSelectedIndex()
+                                                  metricCB.getSelectedIndex()+1
                                                   ,Double.parseDouble(valueTF.getText()),
                                                   new java.sql.Date(BeHealthy.dateParser.parse(dateTF.getText()).getTime())
                                                   )
                        ); //addActivity
                     {
-                        data[array.size()-1][0]=metricCB.getSelectedItem().toString();
-                        data[array.size()-1][1]=valueTF.getText();
-                        data[array.size()-1][2]=dateTF.getText();
+                        data[controller.gethealthMetrics().size()-1][0]=metricCB.getSelectedItem().toString();
+                        data[controller.gethealthMetrics().size()-1][1]=valueTF.getText();
+                        data[controller.gethealthMetrics().size()-1][2]=dateTF.getText();
                         logTA.updateUI();
                     }
-                    
+            		
                 } catch (ParseException ex) {
                     ex.printStackTrace();
                 } //try-catch
@@ -116,16 +123,18 @@ public class HealthView implements ActionListener {
         removeB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	
-            	controller.removeHealthMetric(array.get(logTA.getSelectedRow()).id);
-                for(int i=logTA.getSelectedRow();i<controller.gethealthMetrics().size();i++)
-                {
-                	data[i][0]=data[i+1][0];
-                    data[i][1]=data[i+1][1];
-                    data[i][2]=data[i+1][2];
+            	if(logTA.getSelectedRow()<controller.gethealthMetrics().size())
+        		{
+	            	controller.removeHealthMetric(controller.gethealthMetrics().get(logTA.getSelectedRow()).id);
+	                for(int i=logTA.getSelectedRow();i<controller.gethealthMetrics().size();i++)
+	                {
+	                	data[i][0]=data[i+1][0];
+	                    data[i][1]=data[i+1][1];
+	                    data[i][2]=data[i+1][2];
+	                }
+	                logTA.updateUI();
+	                controller.gethealthMetrics().remove(logTA.getSelectedRow());
                 }
-                logTA.updateUI();
-                
             }
         });
         
