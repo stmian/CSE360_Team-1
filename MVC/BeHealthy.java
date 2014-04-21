@@ -72,7 +72,6 @@ public class BeHealthy {
         mainFrame.setVisible(true);
         mainFrame.add(mPane);
         
-        mainFrame.revalidate();
     } //main
 
     /**

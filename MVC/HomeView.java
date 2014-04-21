@@ -91,7 +91,6 @@ public class HomeView implements ActionListener {
                 lineWeight = new LineChartWeightView();
             	graphP.removeAll();
                 graphP.add(lineWeight);
-                graphP.getParent().revalidate();
                 graphP.repaint();
             }
         });
@@ -104,7 +103,6 @@ public class HomeView implements ActionListener {
                 lineCalories = new LineChartCaloriesView();
             	graphP.removeAll();
                 graphP.add(lineCalories);
-                graphP.getParent().revalidate();
                 graphP.repaint();
             }
         });
@@ -117,7 +115,6 @@ public class HomeView implements ActionListener {
                 pieChart = new PieChartView();
                 graphP.removeAll();
                 graphP.add(pieChart);
-                graphP.getParent().revalidate();
                 graphP.repaint();
             }
         });

@@ -18,7 +18,7 @@ public class HomeController {
     private ActivitiesController activity;
     private UserController user;
     private HealthController health;
-    final private int IMAGE_OFFSET = 30;
+    final private int IMAGE_OFFSET = 100;
 
     //=================== Public properties/methods ====================//
     public HomeController(HomeModel model, ActivitiesController activitiesController, UserController userController, HealthController healthController) {
@@ -174,7 +174,7 @@ public class HomeController {
 			ChartUtilities.writeChartAsPNG(fout, weight, HomeView.CHART_DIMS[0] + IMAGE_OFFSET,HomeView.CHART_DIMS[1] + IMAGE_OFFSET);
 			
 			fout = new FileOutputStream(calFile);
-			ChartUtilities.writeChartAsPNG(fout, calories, HomeView.CHART_DIMS[0],HomeView.CHART_DIMS[1] + IMAGE_OFFSET);
+			ChartUtilities.writeChartAsPNG(fout, calories, HomeView.CHART_DIMS[0] + IMAGE_OFFSET ,HomeView.CHART_DIMS[1] + IMAGE_OFFSET);
 			
 			fout.close();
 			
