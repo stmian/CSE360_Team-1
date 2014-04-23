@@ -64,7 +64,7 @@ public class HomeModel {
         birthdate = birthdate;
         bmi = String.valueOf(df.format(BMI));
         bp = BP;
-        hr = String.valueOf(HR) + " BMP";
+        hr = String.valueOf(HR) + " BPM";
         avgSleep = String.valueOf(df.format(activityData[0]/activityData[1])) + " hr";
         avgWorkout = String.valueOf(df.format(activityData[4]/activityData[5])) + " hr";
         avgWork = String.valueOf(activityData[2]/activityData[3]) + " hr";
