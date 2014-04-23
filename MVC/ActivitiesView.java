@@ -72,12 +72,15 @@ public class ActivitiesView implements ActionListener {
         activityCB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	 unitsL.setText(units[activityCB.getSelectedIndex()]);
+                unitsL.setText(units[activityCB.getSelectedIndex()]);
             } //actionPerformed
         });
         
         valueTF = new JTextField();
         valueTF.setPreferredSize(new Dimension(90, 25));
+        
+        
+        
         date = new JCalendarComboBox();
         date.setDateFormat(new SimpleDateFormat("MM/dd/yyy"));
         
@@ -108,22 +111,29 @@ public class ActivitiesView implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                	if(controller.addActivity(
-                			 				  activityCB.getSelectedIndex()+1,
-                                              activityCB.getSelectedItem().toString(),
-                                              new java.sql.Date(date.getDate().getTime()),
-                                              Double.parseDouble(valueTF.getText()))
-                       ); //addActivity
-                    {
-                        data[controller.getActivities().size()-1][0]=activityCB.getSelectedItem().toString();
-                        data[controller.getActivities().size()-1][1]=valueTF.getText();
-                        data[controller.getActivities().size()-1][2]=BeHealthy.dateFormatter.format(date.getDate());
-                    }
-                    logTA.updateUI();
                     
-                    valueTF.setText("");
+                    Integer.parseInt(valueTF.getText());
+                    
+                    if(Integer.parseInt(valueTF.getText())>0 &&Integer.parseInt(valueTF.getText())<100)
+                    {
+                        if(controller.addActivity(
+                                                  activityCB.getSelectedIndex()+1,
+                                                  activityCB.getSelectedItem().toString(),
+                                                  new java.sql.Date(date.getDate().getTime()),
+                                                  Double.parseDouble(valueTF.getText()))
+                           ); //addActivity
+                        {
+                            data[controller.getActivities().size()-1][0]=activityCB.getSelectedItem().toString();
+                            data[controller.getActivities().size()-1][1]=valueTF.getText();
+                            data[controller.getActivities().size()-1][2]=BeHealthy.dateFormatter.format(date.getDate());
+                        }
+                        logTA.updateUI();
+                        
+                        valueTF.setText("");
+                    }
             		
                 } catch (Exception ex) {
+                	valueTF.setText("");
                     ex.printStackTrace();
                 } //try-catch
             } //actionPerformed

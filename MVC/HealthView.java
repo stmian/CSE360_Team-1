@@ -28,7 +28,7 @@ import de.wannawork.jcalendar.JCalendarComboBox;
 public class HealthView implements ActionListener {
     
     //Activities variables
-    String[] activities = {"Weight", "Blood Pressure", "Blood Sugar", "Heart Rate"};
+    String[] activities = {"Weight", "BP (EX: 120.80)", "Blood Sugar", "Heart Rate"};
     String[] units = {"lbs ", "    ", "mg/dL", "bpm "};
     
     //Components
@@ -86,7 +86,14 @@ public class HealthView implements ActionListener {
         {
         	
             data[i][0]=controller.gethealthMetrics().get(i).typeName;
-            data[i][1]=String.valueOf(controller.gethealthMetrics().get(i).metric);
+            if(controller.gethealthMetrics().get(i).typeName.equals("Blood Pressure"))
+            {
+            	data[i][1]=String.valueOf(controller.gethealthMetrics().get(i).metric).replace('.', '/');
+            }
+            else
+            {
+            	data[i][1]=String.valueOf(controller.gethealthMetrics().get(i).metric);
+            }
             data[i][2]=String.valueOf(controller.gethealthMetrics().get(i).date);
             
         }
@@ -104,20 +111,22 @@ public class HealthView implements ActionListener {
             public void actionPerformed(ActionEvent e) {
             	try {
             		
-                    if(controller.addHealthMetric(
-                                                  metricCB.getSelectedIndex()+1
-                                                  ,Double.parseDouble(valueTF.getText()),
-                                                  new java.sql.Date(date.getDate().getTime())
-                                                  )
-                       ); //addActivity
-                    {
-                        data[controller.gethealthMetrics().size()-1][0]=metricCB.getSelectedItem().toString();
-                        data[controller.gethealthMetrics().size()-1][1]=valueTF.getText();
-                        data[controller.gethealthMetrics().size()-1][2]=BeHealthy.dateFormatter.format(date.getDate());
-                        logTA.updateUI();
-                        valueTF.setText("");
-                    }
-            		
+            		if((Double.parseDouble(valueTF.getText())>0 &&Double.parseDouble(valueTF.getText())<200))
+        			{
+	                    if(controller.addHealthMetric(
+	                                                  metricCB.getSelectedIndex()+1
+	                                                  ,Double.parseDouble(valueTF.getText()),
+	                                                  new java.sql.Date(date.getDate().getTime())
+	                                                  )
+	                       ); //addActivity
+	                    {
+	                        data[controller.gethealthMetrics().size()-1][0]=metricCB.getSelectedItem().toString();
+	                        data[controller.gethealthMetrics().size()-1][1]=valueTF.getText();
+	                        data[controller.gethealthMetrics().size()-1][2]=BeHealthy.dateFormatter.format(date.getDate());
+	                        logTA.updateUI();
+	                        valueTF.setText("");
+	                    }
+        			}
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 } //try-catch
