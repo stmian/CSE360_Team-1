@@ -1,8 +1,6 @@
 //package behealthy;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
+import javax.swing.*;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 
@@ -37,6 +35,13 @@ public class BeHealthy {
             System.out.println("connected");
         } catch (SQLException ex) {
             System.out.println("SQLException: " + ex.getMessage());
+            ImageIcon wifiLogo = new ImageIcon("wifi.png");
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Unable to connect to database. Please connect to the internet.",
+                    "No Internet Connection", JOptionPane.INFORMATION_MESSAGE,
+                    wifiLogo);
+
         }
 
         JFrame mainFrame = new JFrame();
