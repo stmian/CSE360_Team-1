@@ -177,31 +177,6 @@ public class HomeController {
         return activityData;
     }
 
-    public double[] getCalData(){
-        String metricName;
-        double metricValue;
-        double numCalories = 0;
-        double numDays = 0;
-        double[] calData = new double[2];
-
-        final ArrayList<HealthMetric> healthArray=health.gethealthMetrics();
-        for(int i=0;i<healthArray.size();i++)
-        {
-
-            metricName = healthArray.get(i).typeName;
-            metricValue=healthArray.get(i).metric;
-            if(metricName.equals("Eating")) {
-                System.out.println(metricValue);
-                numCalories += metricValue;
-                numDays += 1;
-            }
-        }
-
-        calData[0] = numCalories;
-        calData[1] = numDays;
-
-        return calData;
-    }
 
     public void printData(){
        model.printData(getName(), getBirthdate(), getHeight(), getActivityData(), getBMI(),

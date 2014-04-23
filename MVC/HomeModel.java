@@ -62,8 +62,6 @@ public class HomeModel {
         bmi = String.valueOf(BMI);
         //bp = BP"
         hr = String.valueOf(HR) + " BMP";
-        System.out.println(activityData[0]);
-        System.out.println(activityData[1]);
         avgSleep = String.valueOf(activityData[0]/activityData[1]) + " hr";
         avgWorkout = String.valueOf(activityData[4]/activityData[5]) + " hr";
         avgWork = String.valueOf(activityData[2]/activityData[3]) + " hr";
