@@ -34,18 +34,112 @@ public class HomeController {
         return view.getPanel();
     } //getPanel
 
-    public void printData(){
-        String name, height, weight, birthdate, bmi, bp, hr, bs, avgSleep, avgWorkout, avgWork, avgCalories, totCal, totSleep, totWO, totWork;
-        String currentDate;
+    public String getName(){
+        String name;
+        name = user.getName();
+        return name;
+    }
+
+    public double getHeight(){
+        double height;
+        height = user.getHeight();
+        return height;
+
+
+    }
+
+    public double getWeight(){
+        String metricName;
+        double metricValue;
+        Date metricDate;
+        double weight = 0;
+        Date weightDate = new Date(0);
+
+        final ArrayList<HealthMetric> healthArray=health.gethealthMetrics();
+        for(int i=0;i<healthArray.size();i++)
+        {
+            metricName = healthArray.get(i).typeName;
+            metricValue = healthArray.get(i).metric ;
+            metricDate = healthArray.get(i).date;
+            if(metricName.equals("Weight") && metricDate.after(weightDate)){
+                weight = metricValue;
+                weightDate = metricDate;
+            }
+        }
+
+        return weight;
+    }
+
+    public String getBirthdate(){
+        String birthdate;
+        birthdate = String.valueOf(user.getBirthdate());
+        return birthdate;
+    }
+
+    public double getBMI(){
+        double weight = getWeight();
+        double heightCM = getHeight();
+        double heightIN = heightCM * 0.393701;
+        double BMI = (weight / (heightIN * heightIN) * 703);
+        return BMI;
+    }
+
+    public String bp(){
+        String metricName;
+        String metricValue;
+        Date metricDate;
+        String BP = "";
+        Date BPDate = new Date(0);
+
+        final ArrayList<HealthMetric> healthArray=health.gethealthMetrics();
+        for(int i=0;i<healthArray.size();i++)
+        {
+            metricName = healthArray.get(i).typeName;
+            metricValue = String.valueOf(healthArray.get(i).metric) ;
+            metricDate = healthArray.get(i).date;
+            if(metricName.equals("Blood Pressure") && metricDate.after(BPDate)){
+                BP = metricValue;
+                BPDate = metricDate;
+            }
+        }
+
+        return BP;
+    }
+
+    public double getHR(){
+        String metricName;
+        double metricValue;
+        Date metricDate;
+        double HR = 0;
+        Date HRDate = new Date(0);
+
+        final ArrayList<HealthMetric> healthArray=health.gethealthMetrics();
+        for(int i=0;i<healthArray.size();i++)
+        {
+            metricName = healthArray.get(i).typeName;
+            metricValue = healthArray.get(i).metric ;
+            metricDate = healthArray.get(i).date;
+            if(metricName.equals("Heart Rate") && metricDate.after(HRDate)){
+                HR = metricValue;
+                HRDate = metricDate;
+            }
+        }
+
+        return HR;
+    }
+
+    public double[] getActivityData(){
+        String activityName;
+        double duration = 0;
         double sleepDuration = 0;
         double sleepCount = 0;
         double workDuration = 0;
         double workCount = 0;
         double WODuration = 0;
         double WOCount = 0;
-        String activityName;
-        double duration;
-
+        double totCals = 0;
+        double calDays = 0;
+        double[] activityData = new double[8];
 
         final ArrayList<Activity> array=activity.getActivities();
         for(int i=0;i<array.size();i++)
@@ -65,100 +159,53 @@ public class HomeController {
                 WODuration += duration;
                 WOCount += 1;
             }
-
+            else if(activityName.equals("Eating")){
+                totCals += duration;
+                calDays += 1;
+            }
         }
 
-        //User height in feet and inches
-        double heightCM = user.getHeight();
-        double heightSTD = heightCM * 0.393701;
-        int heightFT = (int) heightSTD / 12;
-        int heightINCH = (int) heightSTD % 12;
+        activityData[0] = sleepDuration;
+        activityData[1] = sleepCount;
+        activityData[2] = workDuration;
+        activityData[3] = workCount;
+        activityData[4] = WODuration;
+        activityData[5] = WOCount;
+        activityData[6] = totCals;
+        activityData[7] = calDays;
 
-        //Get health metrics
-        final ArrayList<HealthMetric> healthArray=health.gethealthMetrics();
-        String metricName = "";
+        return activityData;
+    }
+
+    public double[] getCalData(){
+        String metricName;
         double metricValue;
-        double rawWeight = 0;
-        Date weightDate = new Date(1);
-        Date metricDate = new Date(2);
+        double numCalories = 0;
+        double numDays = 0;
+        double[] calData = new double[2];
 
+        final ArrayList<HealthMetric> healthArray=health.gethealthMetrics();
         for(int i=0;i<healthArray.size();i++)
         {
+
             metricName = healthArray.get(i).typeName;
-            metricValue = healthArray.get(i).metric ;
-            metricDate = healthArray.get(i).date;
-            if(metricName.equals("Weight") && metricDate.after(weightDate)){
-                rawWeight = metricValue;
-                weightDate = metricDate;
+            metricValue=healthArray.get(i).metric;
+            if(metricName.equals("Eating")) {
+                System.out.println(metricValue);
+                numCalories += metricValue;
+                numDays += 1;
             }
-
         }
 
-        //Get current date
-        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
-        Date date = new Date();
+        calData[0] = numCalories;
+        calData[1] = numDays;
 
+        return calData;
+    }
 
-
-
-
-
-        //Get data from database
-        currentDate = String.valueOf(dateFormat.format(date));
-        name = user.getName();
-        height = String.valueOf(heightFT) + " ft. " + String.valueOf(heightINCH) + " in.";
-        weight = String.valueOf(rawWeight) + " lbs";
-        birthdate = String.valueOf(user.getBirthdate());
-        bmi = "23.7";
-        bp = "120/80";
-        hr = "57";
-        bs = "20";
-        avgSleep = String.valueOf(sleepDuration/sleepCount) + " hr";
-        avgWorkout = String.valueOf(WODuration/WOCount) + " hr";
-        avgWork = String.valueOf(workDuration/workCount) + " hr";
-        avgCalories = "1900";
-        totCal = "170,000";
-        totSleep = String.valueOf(sleepDuration) + " hr";
-        totWO = String.valueOf(WODuration) + " hr";
-        totWork = String.valueOf(workDuration) + " hr";
-
-        try {
-            //HTML template from file at URL
-            URL template = new URL("https://dl.dropboxusercontent.com/u/9366248/template.html");
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(template.openStream()));
-            String htmlString = "";
-            String line;
-
-            while((line = bufferedReader.readLine())!= null){
-                htmlString = htmlString + line + "\n";
-            }
-
-            //Replaces the appropriate tag in the template with the correct data
-            htmlString = htmlString.replace("$reportDate", currentDate);
-            htmlString = htmlString.replace("$name", name);
-            htmlString = htmlString.replace("$height", height);
-            htmlString = htmlString.replace("$weight", weight);
-            htmlString = htmlString.replace("$birthdate", birthdate);
-            htmlString = htmlString.replace("$bmi", bmi);
-            htmlString = htmlString.replace("$avgBP", bp);
-            htmlString = htmlString.replace("$avgHR", hr);
-            htmlString = htmlString.replace("$avgBS", bs);
-            htmlString = htmlString.replace("$avgSleep", avgSleep);
-            htmlString = htmlString.replace("$avgWO", avgWorkout);
-            htmlString = htmlString.replace("$avgWork", avgWork);
-            htmlString = htmlString.replace("$avgCal", avgCalories);
-            htmlString = htmlString.replace("$totCal", totCal);
-            htmlString = htmlString.replace("$totSleep", totSleep);
-            htmlString = htmlString.replace("$totWO", totWO);
-            htmlString = htmlString.replace("$totWork", totWork);
-
-            PrintWriter writer = new PrintWriter("BeHealthy.html", "UTF-8");
-            writer.print(htmlString);
-            writer.close();
-        }
-        catch(FileNotFoundException e){}
-        catch(UnsupportedEncodingException e) {}
-        catch (IOException e) {}
+    public void printData(){
+       model.printData(getName(), getBirthdate(), getHeight(), getActivityData(), getBMI(),
+             getHR(), getWeight());
     }
     
     public void chartsToImages(JFreeChart pie, JFreeChart weight, JFreeChart calories){
