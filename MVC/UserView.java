@@ -59,15 +59,15 @@ public class UserView implements ActionListener {
 
         nameL = new JLabel("Name:");
         nameTF = new JTextField(controller.getName());
-        nameTF.setPreferredSize(new Dimension(90, 25));
+        nameTF.setPreferredSize(new Dimension(130, 25));
 
         birthdateL = new JLabel("Birthdate:");
         birthdateTF = new JTextField(BeHealthy.dateFormatter.format(controller.getBirthdate()));
-        birthdateTF.setPreferredSize(new Dimension(90, 25));
+        birthdateTF.setPreferredSize(new Dimension(130, 25));
 
         heightL = new JLabel("Height:");
         heightTF = new JFormattedTextField(displayHeight());
-        heightTF.setPreferredSize(new Dimension(90, 25));
+        heightTF.setPreferredSize(new Dimension(130, 25));
 
         messageTA = new JTextArea("                 Start by entering a little bit of information about yourself."
                 + "\n    Track your daily activities in the Activities tab. Track you health day "
