@@ -7,7 +7,10 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -20,6 +23,8 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import de.wannawork.jcalendar.JCalendarComboBox;
+
 public class HealthView implements ActionListener {
     
     //Activities variables
@@ -29,11 +34,12 @@ public class HealthView implements ActionListener {
     //Components
     JLabel titleL, iconL, enterL, logL, unitsL;
     JComboBox metricCB;
-    JTextField valueTF, dateTF;
+    JTextField valueTF;
     JTable logTA;
     JButton addB, removeB;
     JScrollPane scroll;
     JPanel healthPanel;
+    JCalendarComboBox date;
     
     
     HealthController controller;
@@ -67,8 +73,8 @@ public class HealthView implements ActionListener {
         });
         valueTF = new JTextField();
         valueTF.setPreferredSize(new Dimension(90, 25));
-        dateTF = new JTextField("2/8/14");
-        dateTF.setPreferredSize(new Dimension(80, 25));
+        date = new JCalendarComboBox();
+        date.setDateFormat(new SimpleDateFormat("MM/dd/yy"));
         
         String[] columnNames = {"Type",
             "Metric",
@@ -101,17 +107,18 @@ public class HealthView implements ActionListener {
                     if(controller.addHealthMetric(
                                                   metricCB.getSelectedIndex()+1
                                                   ,Double.parseDouble(valueTF.getText()),
-                                                  new java.sql.Date(BeHealthy.dateParser.parse(dateTF.getText()).getTime())
+                                                  new java.sql.Date(date.getDate().getTime())
                                                   )
                        ); //addActivity
                     {
                         data[controller.gethealthMetrics().size()-1][0]=metricCB.getSelectedItem().toString();
                         data[controller.gethealthMetrics().size()-1][1]=valueTF.getText();
-                        data[controller.gethealthMetrics().size()-1][2]=dateTF.getText();
+                        data[controller.gethealthMetrics().size()-1][2]=BeHealthy.dateFormatter.format(date.getDate());
                         logTA.updateUI();
+                        valueTF.setText("");
                     }
             		
-                } catch (ParseException ex) {
+                } catch (Exception ex) {
                     ex.printStackTrace();
                 } //try-catch
                 
@@ -149,7 +156,7 @@ public class HealthView implements ActionListener {
         addItem(healthPanel, metricCB, 0, 2, 1, 1, inset, GridBagConstraints.CENTER);
         addItem(healthPanel, valueTF, 1, 2, 1, 1, inset, GridBagConstraints.CENTER);
         addItem(healthPanel, unitsL, 2, 2, 1, 1, inset, GridBagConstraints.CENTER);
-        addItem(healthPanel, dateTF, 3, 2, 1, 1, inset, GridBagConstraints.CENTER);
+        addItem(healthPanel, date, 3, 2, 1, 1, inset, GridBagConstraints.CENTER);
         addItem(healthPanel, addB, 4, 2, 1, 1, inset, GridBagConstraints.CENTER);
         addItem(healthPanel, logL, 0, 3, 4, 1, inset, GridBagConstraints.WEST);
         addItem(healthPanel, scroll, 0, 4, 4, 1, inset, GridBagConstraints.WEST);

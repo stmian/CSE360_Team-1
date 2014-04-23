@@ -92,6 +92,7 @@ public class HomeView implements ActionListener {
             	graphP.removeAll();
                 graphP.add(lineWeight);
                 graphP.repaint();
+                graphP.revalidate(); //Do not remove this line. Comment it out if necessary. Will not work on Windows w/o
             }
         });
 
@@ -104,6 +105,7 @@ public class HomeView implements ActionListener {
             	graphP.removeAll();
                 graphP.add(lineCalories);
                 graphP.repaint();
+                graphP.revalidate(); //Do not remove this line. Comment it out if necessary. Will not work on Windows w/o
             }
         });
 
@@ -116,6 +118,7 @@ public class HomeView implements ActionListener {
                 graphP.removeAll();
                 graphP.add(pieChart);
                 graphP.repaint();
+                graphP.revalidate(); //Do not remove this line. Comment it out if necessary. Will not work on Windows w/o
             }
         });
 

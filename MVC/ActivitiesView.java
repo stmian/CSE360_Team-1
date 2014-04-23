@@ -17,6 +17,9 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JFileChooser;
+
+import de.wannawork.jcalendar.JCalendarComboBox;
+
 import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -34,11 +37,12 @@ public class ActivitiesView implements ActionListener {
     //Components
     JLabel titleL, iconL, enterL, logL, unitsL;
     JComboBox activityCB;
-    JTextField valueTF, dateTF;
+    JTextField valueTF;
     JTable logTA;
     JButton addB, removeB, importB;
     JScrollPane scroll;
     JPanel activitiesPanel;
+    JCalendarComboBox date;
     
     
     ActivitiesController controller;
@@ -74,8 +78,8 @@ public class ActivitiesView implements ActionListener {
         
         valueTF = new JTextField();
         valueTF.setPreferredSize(new Dimension(90, 25));
-        dateTF = new JTextField("2/8/14");
-        dateTF.setPreferredSize(new Dimension(80, 25));
+        date = new JCalendarComboBox();
+        date.setDateFormat(new SimpleDateFormat("MM/dd/yyy"));
         
         // TODO: Change this to a table and populate with ArrayList from controller.getActivities
         String[] columnNames = {"Type",
@@ -107,17 +111,19 @@ public class ActivitiesView implements ActionListener {
                 	if(controller.addActivity(
                 			 				  activityCB.getSelectedIndex()+1,
                                               activityCB.getSelectedItem().toString(),
-                                              new java.sql.Date(BeHealthy.dateParser.parse(dateTF.getText()).getTime()),
+                                              new java.sql.Date(date.getDate().getTime()),
                                               Double.parseDouble(valueTF.getText()))
                        ); //addActivity
                     {
                         data[controller.getActivities().size()-1][0]=activityCB.getSelectedItem().toString();
                         data[controller.getActivities().size()-1][1]=valueTF.getText();
-                        data[controller.getActivities().size()-1][2]=dateTF.getText();
+                        data[controller.getActivities().size()-1][2]=BeHealthy.dateFormatter.format(date.getDate());
                     }
                     logTA.updateUI();
+                    
+                    valueTF.setText("");
             		
-                } catch (ParseException ex) {
+                } catch (Exception ex) {
                     ex.printStackTrace();
                 } //try-catch
             } //actionPerformed
@@ -174,7 +180,7 @@ public class ActivitiesView implements ActionListener {
         addItem(activitiesPanel, activityCB, 0, 2, 1, 1, inset, GridBagConstraints.CENTER);
         addItem(activitiesPanel, valueTF, 1, 2, 1, 1, inset, GridBagConstraints.CENTER);
         addItem(activitiesPanel, unitsL, 2, 2, 1, 1, inset, GridBagConstraints.CENTER);
-        addItem(activitiesPanel, dateTF, 3, 2, 1, 1, inset, GridBagConstraints.CENTER);
+        addItem(activitiesPanel, date, 3, 2, 1, 1, inset, GridBagConstraints.CENTER);
         addItem(activitiesPanel, addB, 4, 2, 1, 1, inset, GridBagConstraints.CENTER);
         addItem(activitiesPanel, logL, 0, 3, 4, 1, inset, GridBagConstraints.WEST);
         addItem(activitiesPanel, scroll, 0, 4, 4, 2, inset, GridBagConstraints.WEST);
