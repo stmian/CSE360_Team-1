@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="10cca664-01d8-4219-b8cc-2865140aae27" name="Default" comment="Finished print functionallity. Moved print function into HomeModel and added the rest of the metrics">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CSE360_Team-1.iml" afterPath="$PROJECT_DIR$/CSE360_Team-1.iml" />
+    <list default="true" id="10cca664-01d8-4219-b8cc-2865140aae27" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MVC/HomeController.java" afterPath="$PROJECT_DIR$/MVC/HomeController.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MVC/HomeModel.java" afterPath="$PROJECT_DIR$/MVC/HomeModel.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
@@ -61,8 +60,8 @@
       <file leaf-file-name="HomeController.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/MVC/HomeController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-18.461538" vertical-offset="2025" max-vertical-offset="3090">
-              <caret line="178" column="0" selection-start-line="178" selection-start-column="0" selection-end-line="178" selection-end-column="0" />
+            <state vertical-scroll-proportion="-4.6153846" vertical-offset="2445" max-vertical-offset="3090">
+              <caret line="182" column="42" selection-start-line="182" selection-start-column="42" selection-end-line="182" selection-end-column="42" />
               <folding />
             </state>
           </provider>
@@ -101,8 +100,8 @@
       <file leaf-file-name="HomeModel.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/MVC/HomeModel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.3004292" vertical-offset="805" max-vertical-offset="1755">
-              <caret line="63" column="41" selection-start-line="63" selection-start-column="41" selection-end-line="63" selection-end-column="41" />
+            <state vertical-scroll-proportion="0.36480686" vertical-offset="745" max-vertical-offset="1800">
+              <caret line="61" column="14" selection-start-line="61" selection-start-column="14" selection-end-line="61" selection-end-column="14" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -573,7 +572,11 @@
       <created>1398216320203</created>
       <updated>1398216320203</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Removed unnecessary functions and code">
+      <created>1398221901856</created>
+      <updated>1398221901856</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -625,7 +628,8 @@
     <MESSAGE value="Including the required health metrics in the print report&#10;&#10;" />
     <MESSAGE value="Fixed bug that was preventing the calories chart from sizing correctly&#10;" />
     <MESSAGE value="Finished print functionallity. Moved print function into HomeModel and added the rest of the metrics" />
-    <option name="LAST_COMMIT_MESSAGE" value="Finished print functionallity. Moved print function into HomeModel and added the rest of the metrics" />
+    <MESSAGE value="Removed unnecessary functions and code" />
+    <option name="LAST_COMMIT_MESSAGE" value="Removed unnecessary functions and code" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1023,8 +1027,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/MVC/HomeController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-18.461538" vertical-offset="2025" max-vertical-offset="3090">
-          <caret line="178" column="0" selection-start-line="178" selection-start-column="0" selection-end-line="178" selection-end-column="0" />
+        <state vertical-scroll-proportion="-4.6153846" vertical-offset="2445" max-vertical-offset="3090">
+          <caret line="182" column="42" selection-start-line="182" selection-start-column="42" selection-end-line="182" selection-end-column="42" />
           <folding />
         </state>
       </provider>
@@ -1039,8 +1043,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/MVC/HomeModel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3004292" vertical-offset="805" max-vertical-offset="1755">
-          <caret line="63" column="41" selection-start-line="63" selection-start-column="41" selection-end-line="63" selection-end-column="41" />
+        <state vertical-scroll-proportion="0.36480686" vertical-offset="745" max-vertical-offset="1800">
+          <caret line="61" column="14" selection-start-line="61" selection-start-column="14" selection-end-line="61" selection-end-column="14" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

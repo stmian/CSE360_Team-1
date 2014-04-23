@@ -2,6 +2,7 @@
 import java.io.*;
 import java.net.URL;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -26,7 +27,7 @@ public class HomeModel {
      */
 
     public void printData(String name, String birthdate, double height, double[] activityData,
-                          double BMI, double HR, double weight){
+                          double BMI, double HR, double weight, String BP){
         String currentDate = "";
         //String name = name;
         String heightString = "";
@@ -42,6 +43,8 @@ public class HomeModel {
         String totSleep = "";
         String totWO = "";
         String totWork = "";
+
+        DecimalFormat df = new DecimalFormat("#.##");
 
         //Get current date
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
@@ -59,13 +62,13 @@ public class HomeModel {
         heightString = String.valueOf(heightFT) + " ft. " + String.valueOf(heightINCH) + " in.";
         weightString = String.valueOf(weight) + " lbs";
         birthdate = birthdate;
-        bmi = String.valueOf(BMI);
-        //bp = BP"
+        bmi = String.valueOf(df.format(BMI));
+        bp = BP;
         hr = String.valueOf(HR) + " BMP";
-        avgSleep = String.valueOf(activityData[0]/activityData[1]) + " hr";
-        avgWorkout = String.valueOf(activityData[4]/activityData[5]) + " hr";
+        avgSleep = String.valueOf(df.format(activityData[0]/activityData[1])) + " hr";
+        avgWorkout = String.valueOf(df.format(activityData[4]/activityData[5])) + " hr";
         avgWork = String.valueOf(activityData[2]/activityData[3]) + " hr";
-        avgCalories = String.valueOf(activityData[6]/activityData[7]) + " Cal";
+        avgCalories = String.valueOf(df.format(activityData[6]/activityData[7])) + " Cal";
         totCal = String.valueOf(activityData[6]) + " Cal";
         totSleep = String.valueOf(activityData[0]) + " hr";
         totWO = String.valueOf(activityData[4]) + " hr";

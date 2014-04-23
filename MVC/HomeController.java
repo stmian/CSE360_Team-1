@@ -84,7 +84,7 @@ public class HomeController {
         return BMI;
     }
 
-    public String bp(){
+    public String getBP(){
         String metricName;
         String metricValue;
         Date metricDate;
@@ -180,7 +180,7 @@ public class HomeController {
 
     public void printData(){
        model.printData(getName(), getBirthdate(), getHeight(), getActivityData(), getBMI(),
-             getHR(), getWeight());
+             getHR(), getWeight(), getBP());
     }
     
     public void chartsToImages(JFreeChart pie, JFreeChart weight, JFreeChart calories){
