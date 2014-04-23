@@ -8,6 +8,8 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.text.DecimalFormat;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
@@ -34,9 +36,8 @@ public class HomeView implements ActionListener {
     final public static int[] CHART_DIMS = {178, 178};
 
     //Stats variables
-    double height, weight, heartrate, bloodsugar, sleep, workout,
-            work, calories, totalCalories, totalSleep, totalWorkout, totalWork;
-    String bloodpressure;
+    String height, weight, heartrate, bloodsugar, sleep, workout,
+            work, calories, totalCalories, totalSleep, totalWorkout, totalWork, BMI, bloodpressure;
 
     public HomeView(HomeController controller, HomeModel model) {
         this.controller = controller;
@@ -65,7 +66,7 @@ public class HomeView implements ActionListener {
         titleL.setFont(font_title);
         iconL = new JLabel(new ImageIcon("logo1.png"));
         graphP = new JPanel();
-        graphP.add(lineWeight);        
+        graphP.add(lineWeight);
         statsT = new JTable(statsObj, headers);
         statsT.setBackground(null);
         statsT.setShowGrid(false);
@@ -146,26 +147,32 @@ public class HomeView implements ActionListener {
     }
 
     public void initializeStats() {
-        height = 72;
-        weight = 170;
+        System.out.println("Initializing Stats");
+    	double[] activityData = controller.getActivityData();
+        DecimalFormat df = new DecimalFormat("#.##");
+        DecimalFormat df2 = new DecimalFormat("#");
+    	
+    	height = df2.format(controller.getHeight()*.393701);
+        weight = Double.toString(controller.getWeight());
+        bloodpressure = controller.getBP();
         bloodpressure = "120/80";
-        heartrate = 85;
-        bloodsugar = 90;
-        sleep = 8.2;
-        workout = .75;
-        work = 8.1;
-        calories = 2100;
-        totalCalories = 56000;
-        totalSleep = 196;
-        totalWorkout = 72;
-        totalWork = 190;
+        heartrate = Double.toString(controller.getHR());
+        sleep = df.format(activityData[0]/activityData[1]);
+        workout = df.format(activityData[4]/activityData[5]);
+        work = df.format(activityData[2]/activityData[3]);
+        calories = df.format(activityData[6]/activityData[7]);
+        totalCalories = Double.toString(activityData[6]);
+        totalSleep = Double.toString(activityData[0]);
+        totalWorkout = Double.toString(activityData[4]);
+        totalWork = Double.toString(activityData[2]);
+        BMI = df.format(controller.getWeight()/(controller.getHeight() * controller.getHeight())*703);
 
         Object[][] temp = {
-            {"Height: ", Double.toString(height) + " in", "Avg BS: ", Double.toString(bloodsugar) + " mg/dL", "Total Cal: ", Double.toString(totalCalories) + " Cal"},
-            {"Weight: ", Double.toString(weight) + " lbs", "Avg Sleep: ", Double.toString(sleep) + " hrs", "Total Sleep: ", Double.toString(totalSleep) + " hrs"},
-            {"BMI: ", Double.toString(weight / (height * height) * 703), "Avg WO: ", Double.toString(workout) + " hrs", "Total WO: ", Double.toString(totalWorkout) + " hrs"},
-            {"Avg BP: ", bloodpressure, "Avg Work: ", Double.toString(work) + " hrs", "Total Work:" + " hrs", Double.toString(totalWork) + " hrs"},
-            {"Avg HR: ", Double.toString(heartrate) + " bpm", "Avg Cal: ", Double.toString(calories) + " Cal", "", ""}
+            {"Height: ", height + " in", "Avg Cal: ", calories + " Cal", "Total Work:", totalWork + " hrs"},
+            {"Weight: ", weight + " lbs", "Avg Sleep: ", sleep + " hrs", "Total Sleep: ", totalSleep + " hrs"},
+            {"BMI: ", BMI, "Avg WO: ", workout + " hrs", "Total WO: ", totalWorkout + " hrs"},
+            {"BP: ", bloodpressure, "Avg Work: ", work + " hrs", "Total Cal: ", totalCalories + " Cal"},
+            {"HR: ", heartrate + " bpm", "","", "", ""}
         };
 
         statsObj = temp;

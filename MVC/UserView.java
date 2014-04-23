@@ -15,11 +15,10 @@ public class UserView implements ActionListener {
     String[] averages = {"Blood Pressure", "Heart Rate", "Blood Sugar", "Sleep", "Workout", "Work", "Calories"};
 
     //Components
-    JLabel titleL, iconL, nameL, birthdateL, heightL, resetL;
+    JLabel titleL, iconL, nameL, birthdateL, heightL;
     JTextField nameTF, birthdateTF, heightTF;
     JTextArea messageTA;
-    JComboBox averagesCB;
-    JButton resetB, resetActB, saveB;
+    JButton resetActB, saveB;
     JPanel userPanel;
 
     UserModel model;
@@ -75,15 +74,6 @@ public class UserView implements ActionListener {
         messageTA.setBackground(null);
         messageTA.setEditable(false);
 
-        resetL = new JLabel("Reset Averages");
-        averagesCB = new JComboBox(averages);
-        resetB = new JButton("Reset Avg");
-        resetB.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-                // TODO: Add action code
-            } //actionPerformed
-        });
-
         resetActB = new JButton("Reset Account");
         resetActB.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
@@ -116,10 +106,7 @@ public class UserView implements ActionListener {
         addItem(userPanel, birthdateTF, 2, 3, 2, 1, inset, GridBagConstraints.WEST);
         addItem(userPanel, heightL, 0, 4, 2, 1, inset4, GridBagConstraints.CENTER);
         addItem(userPanel, heightTF, 2, 4, 2, 1, inset4, GridBagConstraints.WEST);
-        addItem(userPanel, resetL, 0, 5, 4, 1, inset, GridBagConstraints.WEST);
-        addItem(userPanel, averagesCB, 0, 6, 1, 1, inset, GridBagConstraints.CENTER);
-        addItem(userPanel, resetB, 1, 6, 1, 1, inset, GridBagConstraints.CENTER);
-        addItem(userPanel, resetActB, 3, 6, 1, 1, inset, GridBagConstraints.CENTER);
+        addItem(userPanel, resetActB, 0, 6, 4, 1, inset, GridBagConstraints.CENTER);
         addItem(userPanel, saveB, 0, 7, 4, 1, inset2, GridBagConstraints.SOUTH);
     } //createView
 

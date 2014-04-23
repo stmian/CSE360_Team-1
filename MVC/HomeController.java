@@ -22,12 +22,16 @@ public class HomeController {
 
     //=================== Public properties/methods ====================//
     public HomeController(HomeModel model, ActivitiesController activitiesController, UserController userController, HealthController healthController) {
-        this.model = new HomeModel();
+        System.out.println("HomeController initializing...");
+    	
+    	this.model = new HomeModel();
+        this.activity = activitiesController;
+        this.user = userController;
+        this.health = healthController;
         this.view = new HomeView(this, this.model);
         this.view.createView();
-        activity = activitiesController;
-        user = userController;
-        health = healthController;
+        
+        System.out.println("HomeController initialized.");
     }
 
     public JPanel getPanel() {
@@ -140,8 +144,11 @@ public class HomeController {
         double totCals = 0;
         double calDays = 0;
         double[] activityData = new double[8];
-
-        final ArrayList<Activity> array=activity.getActivities();
+        
+        if(activity == null)
+        	System.out.println("Null");
+        
+        final  ArrayList<Activity> array=activity.getActivities();
         for(int i=0;i<array.size();i++)
         {
 

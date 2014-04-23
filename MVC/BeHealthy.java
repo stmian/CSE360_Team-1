@@ -56,7 +56,9 @@ public class BeHealthy {
         HomeModel homeModel = new HomeModel();
         HomeController homeController = new HomeController(homeModel, activitiesController, userController, healthController);
         JPanel homePanel = homeController.getPanel();
-
+        
+        System.out.println("All initialization complete");
+        
         //Create tabbed pane
         JTabbedPane mPane = new JTabbedPane();
         mPane.addTab("Home", homePanel);
