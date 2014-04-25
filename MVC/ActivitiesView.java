@@ -170,6 +170,7 @@ public class ActivitiesView implements ActionListener {
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     file = fc.getSelectedFile();
                     controller.importActivity(file);
+                    logTA.updateUI();
                 } else {
                     return;
                 }
