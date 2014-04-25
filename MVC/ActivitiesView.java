@@ -111,27 +111,26 @@ public class ActivitiesView implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    
-                    Integer.parseInt(valueTF.getText());
-                    
-                    if(Integer.parseInt(valueTF.getText())>0 &&Integer.parseInt(valueTF.getText())<100)
-                    {
-                        if(controller.addActivity(
-                                                  activityCB.getSelectedIndex()+1,
-                                                  activityCB.getSelectedItem().toString(),
-                                                  new java.sql.Date(date.getDate().getTime()),
-                                                  Double.parseDouble(valueTF.getText()))
-                           ); //addActivity
-                        {
-                            data[controller.getActivities().size()-1][0]=activityCB.getSelectedItem().toString();
-                            data[controller.getActivities().size()-1][1]=valueTF.getText();
-                            data[controller.getActivities().size()-1][2]=BeHealthy.dateFormatter.format(date.getDate());
-                        }
+                    double inputHours = Double.parseDouble(valueTF.getText());
+
+                    // Boundary case
+                    if (inputHours > 0 && inputHours < 100) {
+                        boolean success = controller.addActivity(
+                                activityCB.getSelectedIndex()+1,
+                                activityCB.getSelectedItem().toString(),
+                                new java.sql.Date(date.getDate().getTime()),
+                                inputHours
+                        ); //addActivity
+
+                        if (success) {
+                            data[controller.getActivities().size()-1][0] = activityCB.getSelectedItem().toString();
+                            data[controller.getActivities().size()-1][1] = valueTF.getText();
+                            data[controller.getActivities().size()-1][2] = BeHealthy.dateFormatter.format(date.getDate());
+                        } //if
+
                         logTA.updateUI();
-                        
                         valueTF.setText("");
-                    }
-            		
+                    } //if
                 } catch (Exception ex) {
                 	valueTF.setText("");
                     ex.printStackTrace();
