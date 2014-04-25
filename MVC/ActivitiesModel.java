@@ -107,8 +107,29 @@ public class ActivitiesModel {
                 //count = count + 1;
          */
                 String type = inputLine[0];
+                int inputID = 0;
                 int time = Integer.parseInt(inputLine[1]);
                 Date inputDate;
+
+
+                //Check to see what type the activity is
+                if(type.equals("Sleep"))
+                {
+                    inputID = 1;
+                }
+                if(type.equals("Eating"))
+                {
+                    inputID = 2;
+                }
+                if(type.equals("Work"))
+                {
+                    inputID = 3;
+                }
+                if(type.equals("Workout"))
+                {
+                    inputID = 4;
+                }
+
 
                 if(inputLine.length < 3) {
 
@@ -122,15 +143,12 @@ public class ActivitiesModel {
                     //inputDate = inputLine[2];
                     Calendar d = Calendar.getInstance();
                     inputDate = d.getTime();
-                    System.out.println("ELSE" + inputDate);
+                    //System.out.println("ELSE" + inputDate);
                 }
-                System.out.println(inputLine[0]);
-                System.out.println(inputLine[1]);
-                System.out.println(inputLine[2]);
 
 
                 //TODO use strings to add activity to database
-               addActivity(BeHealthy.getCurrentUserId(), type, inputDate, time);
+               addActivity(inputID, type, inputDate, time);
                //addActivity(BeHealthy.getCurrentUserId(), type, inputDate, time);
             }
             

@@ -11,6 +11,12 @@
     <orderEntry type="library" name="mysql-connector-java-5.1.30-bin" level="project" />
     <orderEntry type="library" name="MySQL Connector J" level="project" />
     <orderEntry type="library" name="jcalendar-0.8.1" level="project" />
+    <orderEntry type="library" name="swt" level="project" />
+    <orderEntry type="library" name="jfreechart-1.0.17-demo" level="project" />
+    <orderEntry type="library" name="lib" level="project" />
+    <orderEntry type="library" name="JCalander" level="project" />
+    <orderEntry type="library" name="src" level="project" />
+    <orderEntry type="library" name="MVC" level="project" />
   </component>
 </module>
 
