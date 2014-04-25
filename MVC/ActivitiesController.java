@@ -42,4 +42,8 @@ public class ActivitiesController {
     public JPanel getPanel() {
         return view.getPanel();
     } //getPanel
+
+    public void fetchActivities() {
+        model.fetchActivities();
+    } //fetchActivities
 }

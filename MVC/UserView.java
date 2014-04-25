@@ -77,7 +77,7 @@ public class UserView implements ActionListener {
         resetActB = new JButton("Reset Account");
         resetActB.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
-                // TODO: Add action code
+                controller.resetUserProfile();
             } //actionPerformed
         });
 

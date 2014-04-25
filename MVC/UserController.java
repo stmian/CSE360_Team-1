@@ -49,4 +49,12 @@ public class UserController {
     public JPanel getPanel() {
         return view.getPanel();
     } //getPanel
+
+    public void resetUserProfile() {
+        model.resetUserProfile();
+    } //resetUserProfile
+
+    public void fetchUserProfile() {
+        model.fetchUserProfile();
+    } //fetchUserProfile
 } //UserController

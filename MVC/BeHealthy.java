@@ -18,6 +18,9 @@ public class BeHealthy {
     public static SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
     public static SimpleDateFormat dateParser = new SimpleDateFormat("MM/dd/yy");
     public static UserController userController;
+    public static HealthController healthController;
+    public static ActivitiesController activitiesController;
+    public static HomeController homeController;
 
     /**
      * @param args the command line arguments
@@ -51,11 +54,11 @@ public class BeHealthy {
         JPanel userPanel = userController.getPanel();
 
         HealthModel healthModel = new HealthModel();
-        HealthController healthController = new HealthController(healthModel);
+        BeHealthy.healthController = new HealthController(healthModel);
         JPanel healthPanel = healthController.getPanel();
 
         ActivitiesModel activitiesModel = new ActivitiesModel();
-        ActivitiesController activitiesController = new ActivitiesController(activitiesModel);
+        BeHealthy.activitiesController = new ActivitiesController(activitiesModel);
         JPanel activitiesPanel = activitiesController.getPanel();
 
         HomeModel homeModel = new HomeModel();
@@ -89,4 +92,12 @@ public class BeHealthy {
     public static int getCurrentUserId() {
         return BeHealthy.userController.getId();
     } //getCurrentUserId
+
+    // TODO: Add in view refresh after data is fetched
+    public static void fetchPanels() {
+        userController.fetchUserProfile();
+        healthController.fetchHealthMetrics();
+        activitiesController.fetchActivities();
+        //homeController.fetchHomePanel();
+    } //fetchPanels
 } //BeHealthy

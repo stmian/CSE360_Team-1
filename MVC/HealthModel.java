@@ -17,53 +17,17 @@ public class HealthModel {
     
     //=================== Public properties/methods ====================//
     public HealthModel() {
-    	healthMetrics = new ArrayList();
+    	healthMetrics = new ArrayList<HealthMetric>();
         SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
-        String[] temp;
-        Statement st;
-        try {
-            st = (BeHealthy.conn).createStatement();
-            ResultSet res = st.executeQuery("SELECT hm.*, hmt.id, hmt.name AS type_id FROM health_metrics hm, health_metric_types hmt WHERE hm.typeId = hmt.id");
-            temp = res.toString().split(" ");
-            while (res.next()) {
-                // TODO: Change this to add Activities to the collection without the add method. This is only used to add new records.
-                int typeId=res.getInt("typeid");
-                String name="";
-                if(typeId==1)
-                {
-                    name="Weight";
-                }
-                if(typeId==2)
-                {
-                    name="Blood Pressure";
-                }
-                if(typeId==3)
-                {
-                    name="Blood Sugar";
-                }
-                if(typeId==4)
-                {
-                    name="Heart Rate";
-                }
-                
-                healthMetrics.add(new HealthMetric(res.getInt("id"), typeId, name, res.getDouble("value"), res.getDate("date")));
-                
-                //addHealthMetric(Integer.parseInt(temp[0]), Double.parseDouble(temp[1]), dateFormatter.parse(temp[2]));
-            }
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        
-        
-        
-        
-        
+
+        this.fetchHealthMetrics();
     } //__constructor
+
     public ArrayList<HealthMetric> gethealthMetrics()
     {
     	return healthMetrics;
     }
+
     public boolean addHealthMetric(int typeId,double metric, Date date) {
     	String name="";
     	if(typeId==1)
@@ -130,5 +94,30 @@ public class HealthModel {
             e.printStackTrace();
             return false;
         } //try-catch
-    }//HealthModel
-}
+    }//removeHealthMetric
+
+    public void fetchHealthMetrics() {
+        Statement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            statement = BeHealthy.conn.createStatement();
+            resultSet = statement.executeQuery("SELECT hm.*, hmt.name AS typeName FROM health_metrics hm, health_metric_types hmt WHERE hm.typeId = hmt.id");
+
+            healthMetrics.clear();
+
+            while (resultSet.next()) {
+                healthMetrics.add(new HealthMetric(
+                        resultSet.getInt("id"),
+                        resultSet.getInt("typeId"),
+                        resultSet.getString("typeName"),
+                        resultSet.getDouble("value"),
+                        resultSet.getDate("date")
+                ));
+            } //while
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } //try-catch
+    } //fetchHealthMetrics
+} //HealthModel

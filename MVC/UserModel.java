@@ -1,3 +1,4 @@
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -15,6 +16,16 @@ public class UserModel {
 
     //=================== Public properties/methods ====================//
     public UserModel() {
+        // Initialize properties
+        this.id = 0;
+        this.name = "";
+        this.height = 0;
+        this.birthdate = new Date();
+
+        this.fetchUserProfile();
+    } //__constructor
+
+    public void fetchUserProfile() {
         Statement query = null;
         ResultSet resultSet = null;
 
@@ -31,7 +42,7 @@ public class UserModel {
         } catch (SQLException ex) {
             // TODO: Handle exceptions
         } //try-catch
-    } //__constructor
+    } //fetchUserProfile
 
     public int getId() {
         return id;
@@ -64,4 +75,19 @@ public class UserModel {
     public void setBirthdate(Date birthdate) {
         this.birthdate = birthdate;
     } //setBirthdate
+
+    public void resetUserProfile() {
+        PreparedStatement query = null;
+
+        try {
+            query = BeHealthy.conn.prepareStatement("DELETE FROM users WHERE id = ?");
+            query.setInt(1, this.id);
+            query.executeUpdate();
+
+            // Reset all panels
+            BeHealthy.fetchPanels();
+        } catch (SQLException ex) {
+            // TODO: Handle exceptions
+        } //try-catch
+    } //resetUserProfile
 } //User

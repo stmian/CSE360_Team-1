@@ -16,26 +16,9 @@ public class ActivitiesModel {
     
     //=================== Public properties/methods ====================//
     public ActivitiesModel() {
-        Statement query = null;
-        ResultSet resultSet = null;
         activities = new ArrayList<Activity>();
-        
-        try {
-            query = BeHealthy.conn.createStatement();
-            resultSet = query.executeQuery("SELECT a.*, at.name AS typeName FROM activities a, activity_types at WHERE a.typeId = at.id");
-            
-            while (resultSet.next()) {
-                activities.add(new Activity(
-                                            resultSet.getInt("id"),
-                                            resultSet.getInt("typeId"),
-                                            resultSet.getString("typeName"),
-                                            resultSet.getDate("date"),
-                                            resultSet.getDouble("value")
-                                            )); //activities
-            } //while
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } //try-catch
+
+        this.fetchActivities();
     } //__constructor
     
     public ArrayList<Activity> getActivities() {
@@ -211,5 +194,28 @@ public class ActivitiesModel {
     public void updateActivity(int id, int typeId, double duration, Date date) {
         // TODO: Add database call
     } //updateActivity
-    
+
+    public void fetchActivities() {
+        Statement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            statement = BeHealthy.conn.createStatement();
+            resultSet = statement.executeQuery("SELECT a.*, at.name AS typeName FROM activities a, activity_types at WHERE a.typeId = at.id");
+
+            activities.clear();
+
+            while (resultSet.next()) {
+                activities.add(new Activity(
+                        resultSet.getInt("id"),
+                        resultSet.getInt("typeId"),
+                        resultSet.getString("typeName"),
+                        resultSet.getDate("date"),
+                        resultSet.getDouble("value")
+                ));
+            } //while
+        } catch (Exception e) {
+            e.printStackTrace();
+        } //try-catch
+    } //fetchActivities
 }

@@ -39,5 +39,8 @@ public class HealthController {
     public JPanel getPanel() {
         return view.getPanel();
     } //getPanel
-    
+
+    public void fetchHealthMetrics() {
+        model.fetchHealthMetrics();
+    } //fetchHealthMetrics
 }
