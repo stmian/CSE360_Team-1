@@ -3,7 +3,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import javax.swing.*;
-
 import org.jfree.chart.*;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.SymbolAxis;

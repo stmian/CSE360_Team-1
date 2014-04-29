@@ -23,14 +23,14 @@ public class HomeController {
     //=================== Public properties/methods ====================//
     public HomeController(HomeModel model, ActivitiesController activitiesController, UserController userController, HealthController healthController) {
         System.out.println("HomeController initializing...");
-    	
-    	this.model = new HomeModel();
+
+        this.model = new HomeModel();
         this.activity = activitiesController;
         this.user = userController;
         this.health = healthController;
         this.view = new HomeView(this, this.model);
         this.view.createView();
-        
+
         System.out.println("HomeController initialized.");
     }
 
@@ -144,10 +144,10 @@ public class HomeController {
         double totCals = 0;
         double calDays = 0;
         double[] activityData = new double[8];
-        
+
         if(activity == null)
-        	System.out.println("Null");
-        
+            System.out.println("Null");
+
         final  ArrayList<Activity> array=activity.getActivities();
         for(int i=0;i<array.size();i++)
         {
@@ -186,32 +186,32 @@ public class HomeController {
 
 
     public void printData(){
-       model.printData(getName(), getBirthdate(), getHeight(), getActivityData(), getBMI(),
-             getHR(), getWeight(), getBP());
+        model.printData(getName(), getBirthdate(), getHeight(), getActivityData(), getBMI(),
+                getHR(), getWeight(), getBP());
     }
-    
+
     public void chartsToImages(JFreeChart pie, JFreeChart weight, JFreeChart calories){
-    	File pieFile = new File("piechart.png");
-    	File weightFile = new File("linechartweight.png");
-    	File calFile = new File("linechartcalories.png");
-    	
-    	try {
-    		FileOutputStream fout = new FileOutputStream(pieFile);
-			ChartUtilities.writeChartAsPNG(fout, pie, HomeView.CHART_DIMS[0] + IMAGE_OFFSET,HomeView.CHART_DIMS[1] + IMAGE_OFFSET);
-			
-			fout = new FileOutputStream(weightFile);
-			ChartUtilities.writeChartAsPNG(fout, weight, HomeView.CHART_DIMS[0] + IMAGE_OFFSET,HomeView.CHART_DIMS[1] + IMAGE_OFFSET);
-			
-			fout = new FileOutputStream(calFile);
-			ChartUtilities.writeChartAsPNG(fout, calories, HomeView.CHART_DIMS[0] + IMAGE_OFFSET ,HomeView.CHART_DIMS[1] + IMAGE_OFFSET);
-			
-			fout.close();
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	
+        File pieFile = new File("piechart.png");
+        File weightFile = new File("linechartweight.png");
+        File calFile = new File("linechartcalories.png");
+
+        try {
+            FileOutputStream fout = new FileOutputStream(pieFile);
+            ChartUtilities.writeChartAsPNG(fout, pie, HomeView.CHART_DIMS[0] + IMAGE_OFFSET,HomeView.CHART_DIMS[1] + IMAGE_OFFSET);
+
+            fout = new FileOutputStream(weightFile);
+            ChartUtilities.writeChartAsPNG(fout, weight, HomeView.CHART_DIMS[0] + IMAGE_OFFSET,HomeView.CHART_DIMS[1] + IMAGE_OFFSET);
+
+            fout = new FileOutputStream(calFile);
+            ChartUtilities.writeChartAsPNG(fout, calories, HomeView.CHART_DIMS[0] + IMAGE_OFFSET ,HomeView.CHART_DIMS[1] + IMAGE_OFFSET);
+
+            fout.close();
+
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
     }
 
 

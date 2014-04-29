@@ -17,96 +17,96 @@ import org.jfree.data.xy.*;
 
 public class LineChartWeightView  extends JPanel{
 
-	JFreeChart chart;
-	private HealthModel model;
-	String[] date;
+    JFreeChart chart;
+    private HealthModel model;
+    String[] date;
 
-	public LineChartWeightView(){
-		model = new HealthModel();
-		XYDataset dataset = createDataset();
+    public LineChartWeightView(){
+        model = new HealthModel();
+        XYDataset dataset = createDataset();
 
-		chart = createChart(dataset);
-		ChartPanel chartPanel = new ChartPanel(chart);
-		chartPanel.setPreferredSize(new java.awt.Dimension(HomeView.CHART_DIMS[0],HomeView.CHART_DIMS[1]));
-		this.add(chartPanel);
-	}
+        chart = createChart(dataset);
+        ChartPanel chartPanel = new ChartPanel(chart);
+        chartPanel.setPreferredSize(new java.awt.Dimension(HomeView.CHART_DIMS[0],HomeView.CHART_DIMS[1]));
+        this.add(chartPanel);
+    }
 
-	private XYDataset createDataset(){
-		int entries = 0; //number of entries in DB
-		int[] d;
-		double[] weight;
-		ArrayList<HealthMetric> health=model.gethealthMetrics();
-		Calendar cal = Calendar.getInstance();
+    private XYDataset createDataset(){
+        int entries = 0; //number of entries in DB
+        int[] d;
+        double[] weight;
+        ArrayList<HealthMetric> health=model.gethealthMetrics();
+        Calendar cal = Calendar.getInstance();
 
-		//TODO: Get number of entries from DB
-		for(int i=0; i<health.size();i++){
-			if(health.get(i).typeName.equals("Weight")){
-				entries++;
-			}
-		}
+        //TODO: Get number of entries from DB
+        for(int i=0; i<health.size();i++){
+            if(health.get(i).typeName.equals("Weight")){
+                entries++;
+            }
+        }
 
-		date = new String[entries];
-		weight = new double[entries];
-		d = new int[entries];		
+        date = new String[entries];
+        weight = new double[entries];
+        d = new int[entries];
 
-		int x=-1;
-		for(int i=0; i<health.size(); i++){
-			if(health.get(i).typeName.equals("Weight")){
-				x++;
-				cal.setTime(health.get(i).date);
-				date[x] = (Integer.toString(cal.get(Calendar.MONTH))+Integer.toString(cal.get(Calendar.DAY_OF_MONTH))+Integer.toString(cal.get(Calendar.YEAR)));
-				d[x] = x+1;
-				weight[x] = health.get(i).metric;
-			}
-		}
+        int x=-1;
+        for(int i=0; i<health.size(); i++){
+            if(health.get(i).typeName.equals("Weight")){
+                x++;
+                cal.setTime(health.get(i).date);
+                date[x] = (Integer.toString(cal.get(Calendar.MONTH))+Integer.toString(cal.get(Calendar.DAY_OF_MONTH))+Integer.toString(cal.get(Calendar.YEAR)));
+                d[x] = x+1;
+                weight[x] = health.get(i).metric;
+            }
+        }
 
-		XYSeries series1 = new XYSeries("Weight");
-		for(int i=0; i<entries; i++){
-			series1.add(d[i], weight[i]);
-		}
+        XYSeries series1 = new XYSeries("Weight");
+        for(int i=0; i<entries; i++){
+            series1.add(d[i], weight[i]);
+        }
 
-		final XYSeriesCollection dataset = new XYSeriesCollection();
-		dataset.addSeries(series1);
+        final XYSeriesCollection dataset = new XYSeriesCollection();
+        dataset.addSeries(series1);
 
-		return dataset;		
-	}
+        return dataset;
+    }
 
-	private JFreeChart createChart(final XYDataset dataset) {
+    private JFreeChart createChart(final XYDataset dataset) {
 
-		// create the chart...
-		final JFreeChart chart = ChartFactory.createXYLineChart(
-				"Daily Weight",      // chart title
-				"Date",                      // x axis label
-				"Weight (lbs)",                      // y axis label
-				dataset,                  // data
-				PlotOrientation.VERTICAL,
-				false,                     // include legend
-				true,                     // tooltips
-				false                     // urls
-				);
+        // create the chart...
+        final JFreeChart chart = ChartFactory.createXYLineChart(
+                "Daily Weight",      // chart title
+                "Date",                      // x axis label
+                "Weight (lbs)",                      // y axis label
+                dataset,                  // data
+                PlotOrientation.VERTICAL,
+                false,                     // include legend
+                true,                     // tooltips
+                false                     // urls
+        );
 
-		chart.setBackgroundPaint(null);
+        chart.setBackgroundPaint(null);
 
-		// get a reference to the plot for further customization...
-		final XYPlot plot = chart.getXYPlot();
-		plot.setBackgroundPaint(null);
-		plot.setDomainGridlinePaint(Color.gray);
-		plot.setRangeGridlinePaint(Color.gray);
+        // get a reference to the plot for further customization...
+        final XYPlot plot = chart.getXYPlot();
+        plot.setBackgroundPaint(null);
+        plot.setDomainGridlinePaint(Color.gray);
+        plot.setRangeGridlinePaint(Color.gray);
 
-		final XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
-		renderer.setSeriesLinesVisible(1, false);
-		renderer.setSeriesShapesVisible(0, false);
-		plot.setRenderer(renderer);
+        final XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
+        renderer.setSeriesLinesVisible(1, false);
+        renderer.setSeriesShapesVisible(0, false);
+        plot.setRenderer(renderer);
 
-		// change the auto tick unit selection to integer units only...
-		final ValueAxis domain = new SymbolAxis("Dates", date);
-		domain.setVerticalTickLabels(true);
-		plot.setDomainAxis(domain);
-		
-		return chart;
-	}
-	
-	public JFreeChart getChart(){
-		return chart;
-	}
+        // change the auto tick unit selection to integer units only...
+        final ValueAxis domain = new SymbolAxis("Dates", date);
+        domain.setVerticalTickLabels(true);
+        plot.setDomainAxis(domain);
+
+        return chart;
+    }
+
+    public JFreeChart getChart(){
+        return chart;
+    }
 }

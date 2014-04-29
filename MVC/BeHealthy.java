@@ -8,7 +8,6 @@ import java.text.SimpleDateFormat;
  * @author Brenden
  */
 public class BeHealthy {
-
     public static Connection conn = null;
     static String user = "cse360";
     static String pass = "behealthy";
@@ -64,9 +63,9 @@ public class BeHealthy {
         HomeModel homeModel = new HomeModel();
         HomeController homeController = new HomeController(homeModel, activitiesController, userController, healthController);
         JPanel homePanel = homeController.getPanel();
-        
+
         System.out.println("All initialization complete");
-        
+
         //Create tabbed pane
         JTabbedPane mPane = new JTabbedPane();
         mPane.addTab("Home", homePanel);
@@ -81,7 +80,7 @@ public class BeHealthy {
         mainFrame.setResizable(true);
         mainFrame.setVisible(true);
         mainFrame.add(mPane);
-        
+
     } //main
 
     /**

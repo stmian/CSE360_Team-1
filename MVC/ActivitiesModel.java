@@ -13,76 +13,76 @@ import java.io.FileNotFoundException;
 public class ActivitiesModel {
     //=================== Private properties/methods ===================//
     private ArrayList<Activity> activities;
-    
+
     //=================== Public properties/methods ====================//
     public ActivitiesModel() {
         activities = new ArrayList<Activity>();
 
         this.fetchActivities();
     } //__constructor
-    
+
     public ArrayList<Activity> getActivities() {
         return activities;
     } //getActivities
-    
+
     public boolean addActivity(int typeId, String typeName, Date date, double duration) {
         PreparedStatement query = null;
         ResultSet resultSet = null;
         java.sql.Date date_sql = new java.sql.Date(date.getTime());
-        
+
         try {
             query = BeHealthy.conn.prepareStatement("INSERT INTO activities (userId, typeId, date, value) VALUES (?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
             query.setInt(1, BeHealthy.getCurrentUserId());
             query.setInt(2, typeId);
             query.setDate(3, date_sql);
             query.setDouble(4, duration);
-            
+
             // Insert into table and returns new ID
             query.executeUpdate();
             resultSet = query.getGeneratedKeys();
             resultSet.next();
             int newId = resultSet.getInt(1);
-            
+
             activities.add(new Activity(
-                                        newId,
-                                        typeId,
-                                        typeName,
-                                        date,
-                                        duration
-                                        )); //activities
+                    newId,
+                    typeId,
+                    typeName,
+                    date,
+                    duration
+            )); //activities
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         } //try-catch
     } //addActivity
-    
+
     public boolean removeActivity(int id) {
         PreparedStatement query = null;
         ResultSet resultSet = null;
-        
+
         try {
             query = BeHealthy.conn.prepareStatement("DELETE FROM activities WHERE id = ?");
             query.setInt(1, id);
             query.executeUpdate();
-            
+
             // TODO: Remove activity from array list
-            
+
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         } //try-catch
     }
-    
+
     public boolean importActivity(File file) {
         try {
             Scanner scanner = new Scanner(file);
-           // ArrayList<String> time = new ArrayList<String>();
+            // ArrayList<String> time = new ArrayList<String>();
             //ArrayList<String> active = new ArrayList<String>();
             int count = 0;
             //int falseCount = 0;
-            
+
             while (scanner.hasNextLine()) {
 
                 String line = scanner.nextLine();
@@ -148,13 +148,13 @@ public class ActivitiesModel {
 
 
                 //TODO use strings to add activity to database
-               addActivity(inputID, type, inputDate, time);
-               //addActivity(BeHealthy.getCurrentUserId(), type, inputDate, time);
+                addActivity(inputID, type, inputDate, time);
+                //addActivity(BeHealthy.getCurrentUserId(), type, inputDate, time);
             }
-            
-           // if(time.size() == 0){
-           // 	return false;
-           // }
+
+            // if(time.size() == 0){
+            // 	return false;
+            // }
             /*
             String startTimeString = time.get(0);
             SimpleDateFormat sdf = new SimpleDateFormat("hh:mm");
@@ -182,9 +182,9 @@ public class ActivitiesModel {
                 stopDate = c.getTime();
             }
             */
-           // long difference = stopDate.getTime() - startDate.getTime();
-           // double conversionFactor = 1000 * 60 * 60;
-           // double differenceHours = (double) (difference / conversionFactor);
+            // long difference = stopDate.getTime() - startDate.getTime();
+            // double conversionFactor = 1000 * 60 * 60;
+            // double differenceHours = (double) (difference / conversionFactor);
 /*
             String type = input[0];
             int time = (int) input[1];
@@ -208,7 +208,7 @@ public class ActivitiesModel {
             return false;
         }
     }
-    
+
     public void updateActivity(int id, int typeId, double duration, Date date) {
         // TODO: Add database call
     } //updateActivity

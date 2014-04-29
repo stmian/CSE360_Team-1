@@ -31,7 +31,7 @@ public class HomeView implements ActionListener {
     PieChartView pieChart;
     LineChartWeightView lineWeight;
     LineChartCaloriesView lineCalories;
-    
+
     //Constants
     final public static int[] CHART_DIMS = {178, 178};
 
@@ -49,7 +49,7 @@ public class HomeView implements ActionListener {
         homePanel.setLayout(new GridBagLayout());
         lineWeight = new LineChartWeightView();
         lineCalories = new LineChartCaloriesView();
-        pieChart = new PieChartView();        
+        pieChart = new PieChartView();
 
         //Initialize standard variables
         ButtonListener bl = new ButtonListener();
@@ -79,7 +79,7 @@ public class HomeView implements ActionListener {
         printB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	controller.chartsToImages(pieChart.getChart(), lineWeight.getChart(), lineCalories.getChart());
+                controller.chartsToImages(pieChart.getChart(), lineWeight.getChart(), lineCalories.getChart());
                 controller.printData();
             }
         });
@@ -88,9 +88,9 @@ public class HomeView implements ActionListener {
         graph1B.setPreferredSize(new Dimension(90, 25));
         graph1B.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {                
+            public void actionPerformed(ActionEvent e) {
                 lineWeight = new LineChartWeightView();
-            	graphP.removeAll();
+                graphP.removeAll();
                 graphP.add(lineWeight);
                 graphP.repaint();
                 graphP.revalidate(); //Do not remove this line. Comment it out if necessary. Will not work on Windows w/o
@@ -103,7 +103,7 @@ public class HomeView implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 lineCalories = new LineChartCaloriesView();
-            	graphP.removeAll();
+                graphP.removeAll();
                 graphP.add(lineCalories);
                 graphP.repaint();
                 graphP.revalidate(); //Do not remove this line. Comment it out if necessary. Will not work on Windows w/o
@@ -148,11 +148,11 @@ public class HomeView implements ActionListener {
 
     public void initializeStats() {
         System.out.println("Initializing Stats");
-    	double[] activityData = controller.getActivityData();
+        double[] activityData = controller.getActivityData();
         DecimalFormat df = new DecimalFormat("#.##");
         DecimalFormat df2 = new DecimalFormat("#");
-    	
-    	height = df2.format(controller.getHeight()*.393701);
+
+        height = df2.format(controller.getHeight()*.393701);
         weight = Double.toString(controller.getWeight());
         bloodpressure = controller.getBP();
         bloodpressure = "120/80";
@@ -168,11 +168,11 @@ public class HomeView implements ActionListener {
         BMI = df.format(controller.getWeight()/(controller.getHeight() * controller.getHeight())*703);
 
         Object[][] temp = {
-            {"Height: ", height + " in", "Avg Cal: ", calories + " Cal", "Total Work:", totalWork + " hrs"},
-            {"Weight: ", weight + " lbs", "Avg Sleep: ", sleep + " hrs", "Total Sleep: ", totalSleep + " hrs"},
-            {"BMI: ", BMI, "Avg WO: ", workout + " hrs", "Total WO: ", totalWorkout + " hrs"},
-            {"BP: ", bloodpressure, "Avg Work: ", work + " hrs", "Total Cal: ", totalCalories + " Cal"},
-            {"HR: ", heartrate + " bpm", "","", "", ""}
+                {"Height: ", height + " in", "Avg Cal: ", calories + " Cal", "Total Work:", totalWork + " hrs"},
+                {"Weight: ", weight + " lbs", "Avg Sleep: ", sleep + " hrs", "Total Sleep: ", totalSleep + " hrs"},
+                {"BMI: ", BMI, "Avg WO: ", workout + " hrs", "Total WO: ", totalWorkout + " hrs"},
+                {"BP: ", bloodpressure, "Avg Work: ", work + " hrs", "Total Cal: ", totalCalories + " Cal"},
+                {"HR: ", heartrate + " bpm", "","", "", ""}
         };
 
         statsObj = temp;
