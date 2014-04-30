@@ -11,11 +11,13 @@ _____
 - The use is also able to export the data summary and graphs to a HTML document which can then be printed or shared.
 
 
+
 ## Requirements
 - This application was implemented using the Java programming language and it is therefore necessary that you have the Java SDK installed on your computer.
 - The application has been tested to run on a Windows environment, however as java is platform independent, it should be able to run on any operating system that is can run the Java SDK
 - The project requires the use of the following non-standard Java libraries: `mysql-connector`, `jcommon`, `jfreechart`, and `jcalendar`
 - An internet connection is required to use this application as it relies on a hosted mySQL database.
+
 
 
 ## Architecture
