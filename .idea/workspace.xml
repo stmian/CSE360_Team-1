@@ -404,7 +404,11 @@
       <created>1398883479825</created>
       <updated>1398883479825</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Updated README&#10;">
+      <created>1398883557676</created>
+      <updated>1398883557676</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -462,7 +466,8 @@
     <MESSAGE value="Fixed unit on Blood Pressure display. Changed from &quot;BMP&quot; to &quot;BPM&quot;&#10;" />
     <MESSAGE value="Fixed indentation &#10;" />
     <MESSAGE value="Completed README&#10;" />
-    <option name="LAST_COMMIT_MESSAGE" value="Completed README&#10;" />
+    <MESSAGE value="Updated README&#10;" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated README&#10;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
