@@ -1,4 +1,6 @@
 
+import org.junit.Test;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
@@ -24,6 +26,7 @@ public class HealthController {
     {
         return model.gethealthMetrics();
     }
+
 
     public boolean addHealthMetric(int typeId,double metric, Date date)
     {

@@ -21,10 +21,45 @@ public class BeHealthy {
     public static ActivitiesController activitiesController;
     public static HomeController homeController;
 
+    private static UserModel userModel;
+    private static HealthModel healthModel;
+    private static ActivitiesModel activitiesModel;
+    private static HomeModel homeModel;
+
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        new BeHealthy();
+
+        JFrame mainFrame = new JFrame();
+        JPanel healthPanel = healthController.getPanel();
+        JPanel activitiesPanel = activitiesController.getPanel();
+        JPanel homePanel = homeController.getPanel();
+        JPanel userPanel = userController.getPanel();
+
+
+
+        //Create tabbed pane
+        JTabbedPane mPane = new JTabbedPane();
+        mPane.addTab("Home", homePanel);
+        mPane.addTab("Activities", activitiesPanel);
+        mPane.addTab("Health", healthPanel);
+        mPane.addTab("Profile", userPanel);
+
+
+
+
+        mainFrame.setSize(550, 550);
+        mainFrame.setTitle("BeHealthy");
+        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        mainFrame.setResizable(true);
+        mainFrame.setVisible(true);
+        mainFrame.add(mPane);
+
+    } //main
+
+    public BeHealthy(){
         try {
             Class.forName(dbClass).newInstance();
             System.out.println("driver loaded");
@@ -46,42 +81,24 @@ public class BeHealthy {
 
         }
 
-        JFrame mainFrame = new JFrame();
 
-        UserModel userModel = new UserModel();
+
+        userModel = new UserModel();
         BeHealthy.userController = new UserController(userModel);
-        JPanel userPanel = userController.getPanel();
 
-        HealthModel healthModel = new HealthModel();
+
+        healthModel = new HealthModel();
         BeHealthy.healthController = new HealthController(healthModel);
-        JPanel healthPanel = healthController.getPanel();
 
-        ActivitiesModel activitiesModel = new ActivitiesModel();
+        activitiesModel = new ActivitiesModel();
         BeHealthy.activitiesController = new ActivitiesController(activitiesModel);
-        JPanel activitiesPanel = activitiesController.getPanel();
 
-        HomeModel homeModel = new HomeModel();
-        HomeController homeController = new HomeController(homeModel, activitiesController, userController, healthController);
-        JPanel homePanel = homeController.getPanel();
+        homeModel = new HomeModel();
+        homeController = new HomeController(homeModel, activitiesController, userController, healthController);
 
         System.out.println("All initialization complete");
 
-        //Create tabbed pane
-        JTabbedPane mPane = new JTabbedPane();
-        mPane.addTab("Home", homePanel);
-        mPane.addTab("Activities", activitiesPanel);
-        mPane.addTab("Health", healthPanel);
-        mPane.addTab("Profile", userPanel);
-
-        mainFrame = new JFrame();
-        mainFrame.setSize(550, 550);
-        mainFrame.setTitle("BeHealthy");
-        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainFrame.setResizable(true);
-        mainFrame.setVisible(true);
-        mainFrame.add(mPane);
-
-    } //main
+    }
 
     /**
      * Makes the current user ID accessible throughout application
