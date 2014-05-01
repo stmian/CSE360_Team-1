@@ -21,6 +21,12 @@ public class HealthControllerTest {
 
     @Test
     public void testRemoveHealthMetric() throws Exception{
-
+    	BeHealthy health = new BeHealthy();
+    	
+    	HealthController controller = health.healthController;
+    	
+    	assertEquals("Success should return true", true, controller.removeHealthMetric(-1));
+    	assertEquals("Success should return true", true, controller.removeHealthMetric(1));
+    	assertEquals("Success should return true", true, controller.removeHealthMetric(1000));
     }
 }
