@@ -10,15 +10,23 @@ _____
 - When a user inputs a new data item, the program will update a summary page with average statistics as well as a series of graphs that show trends in various metrics.
 - The use is also able to export the data summary and graphs to a HTML document which can then be printed or shared.
 
-
-
 ## Requirements
 - This application was implemented using the Java programming language and it is therefore necessary that you have the Java SDK installed on your computer.
 - The application has been tested to run on a Windows environment, however as java is platform independent, it should be able to run on any operating system that is can run the Java SDK
 - The project requires the use of the following non-standard Java libraries: `mysql-connector`, `jcommon`, `jfreechart`, and `jcalendar`
 - An internet connection is required to use this application as it relies on a hosted mySQL database.
 
+## Running the Application
+### From a Jar File
+1. Make sure you are connected to the interet
+2. Run the application
 
+### From the code
+1. Open a Java IDE
+2. Create a new project
+3. Link all files
+4. Add external libraries
+5. Run program
 
 ## Architecture
 - This program was developed using an incremental development plan in GUI was developed first followed by the various program functions
