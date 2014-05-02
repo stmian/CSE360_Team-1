@@ -18,7 +18,7 @@ _____
 
 ## Running the Application
 ### From a Jar File
-1. Make sure you are connected to the interet
+1. Make sure you are connected to the internet
 2. Run the application
 
 ### From the code
